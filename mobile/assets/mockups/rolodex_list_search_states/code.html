@@ -1,0 +1,89 @@
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-bright": "#38393c", "surface-container-lowest": "#0d0e11", "on-primary": "#2f3131", "on-tertiary-fixed": "#1b1c19", "on-primary-container": "#636565", "on-secondary-container": "#b5b9bf", "background": "#121316", "inverse-on-surface": "#2f3033", "on-surface-variant": "#c4c7c8", "surface-tint": "#c6c6c7", "surface-container-high": "#292a2d", "surface-dim": "#121316", "tertiary-container": "#e3e3de", "on-primary-fixed": "#1a1c1c", "on-tertiary-fixed-variant": "#464744", "secondary": "#c3c7cd", "on-tertiary": "#30312e", "surface-variant": "#343538", "primary": "#ffffff", "tertiary-fixed-dim": "#c7c7c2", "on-surface": "#e3e2e6", "surface": "#121316", "inverse-primary": "#5d5f5f", "primary-container": "#e2e2e2", "on-secondary": "#2c3136", "surface-container-highest": "#343538", "primary-fixed": "#e2e2e2", "secondary-fixed": "#dfe3e9", "outline": "#8e9192", "on-background": "#e3e2e6", "primary-fixed-dim": "#c6c6c7", "tertiary": "#ffffff", "error-container": "#93000a", "secondary-container": "#45494f", "on-secondary-fixed-variant": "#43474c", "on-primary-fixed-variant": "#454747", "on-secondary-fixed": "#171c21", "surface-container": "#1e2022", "on-tertiary-container": "#646561", "outline-variant": "#444748", "surface-container-low": "#1a1b1e", "error": "#ffb4ab", "on-error-container": "#ffdad6", "secondary-fixed-dim": "#c3c7cd", "tertiary-fixed": "#e3e3de" }, "borderRadius": { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px" }, "spacing": { "xl": "24px", "md": "8px", "lg": "16px", "xs": "2px", "sm": "4px", "xxl": "32px", "huge": "64px" }, "fontFamily": { "display-lg-mobile": ["EB Garamond"], "label-caps": ["Hanken Grotesk"], "headline-md": ["EB Garamond"], "display-lg": ["EB Garamond"], "body-lg": ["Hanken Grotesk"], "body-sm": ["Hanken Grotesk"] }, "fontSize": { "display-lg-mobile": ["32px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "700" }], "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0.02em", "fontWeight": "500" }], "display-lg": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0.01em", "fontWeight": "400" }], "body-sm": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "400" }] } } } };</script><style>@layer base { body { @apply bg-[#000000] text-on-surface antialiased; } .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } } .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; } ::-webkit-scrollbar { display: none; }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body><header class="fixed top-0 inset-x-0 z-50 bg-[#000000] pt-safe"><div class="h-20 px-xxl flex items-center gap-xl border-b border-[#212225]"><button class="w-10 h-10 flex items-center justify-start opacity-60 hover:opacity-100" onclick="history.back()"><span class="material-symbols-outlined text-[20px]">arrow_back</span></button><h1 class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface">Search Overlay</h1></div></header><main class="flex flex-col relative w-full pt-20 bg-[#000000]"><div class="flex flex-col w-full relative min-h-full">
+<!-- Active Search View -->
+<div class="px-xxl py-xl">
+<div class="relative w-full border border-[#212225] p-sm flex items-center gap-md group focus-within:border-primary transition-colors duration-300">
+<span class="material-symbols-outlined text-[#8e9192] text-[20px] ml-sm">search</span>
+<input class="w-full bg-transparent outline-none font-body-lg text-primary placeholder-[#636565] tracking-wide" type="text" value="A. Sterling"/>
+<button class="material-symbols-outlined text-[#8e9192] hover:text-primary transition-colors duration-200 mr-sm text-[20px]">close</button>
+</div>
+<!-- Single Result (Card Thumbnail) -->
+<div class="mt-xl flex flex-col gap-lg">
+<h3 class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant">Search Results</h3>
+<button class="w-full text-left relative group">
+<div class="absolute inset-0 bg-[#FBFAF5] opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none"></div>
+<div class="flex items-center gap-lg border-b border-[#212225] pb-lg pt-sm relative">
+<!-- Simulated Card Edge / Thumbnail -->
+<div class="w-16 h-10 bg-[#FBFAF5] relative shrink-0 overflow-hidden" style="box-shadow: 1px 1px 0px 0px #e3e3de;">
+<div class="absolute inset-px border border-[#e3e3de]"></div>
+<div class="w-full h-full opacity-5 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmYiLz48cmVjdCB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSIjMDAwIi8+PC9zdmc+')]"></div>
+<div class="absolute top-1 left-1 right-1 h-px bg-[#1A1A1A] opacity-20"></div>
+<div class="absolute top-2.5 left-1 w-1/2 h-px bg-[#1A1A1A] opacity-10"></div>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-primary tracking-wide">Alastair Sterling</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Director of Acquisitions</span>
+</div>
+<span class="material-symbols-outlined ml-auto text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity duration-300">chevron_right</span>
+</div>
+</button>
+</div>
+</div>
+<div class="w-full h-px bg-[#212225] my-xl"></div>
+<!-- Compact List View -->
+<div class="px-xxl py-lg flex flex-col gap-xl">
+<div class="flex flex-col">
+<h3 class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant mb-lg">Recent</h3>
+<div class="flex flex-col">
+<button class="w-full text-left group">
+<div class="flex flex-col border-b border-[#212225] py-lg group-hover:pl-sm transition-all duration-300">
+<span class="font-headline-md text-[20px] leading-[28px] text-primary tracking-wide">Eleanor Vance</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Curator, The Hill House Gallery</span>
+</div>
+</button>
+<button class="w-full text-left group">
+<div class="flex flex-col border-b border-[#212225] py-lg group-hover:pl-sm transition-all duration-300">
+<span class="font-headline-md text-[20px] leading-[28px] text-primary tracking-wide">Julian Sorel</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Private Wealth Management</span>
+</div>
+</button>
+</div>
+</div>
+<div class="flex flex-col mt-xl">
+<h3 class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant mb-lg">All Contacts</h3>
+<div class="flex flex-col">
+<button class="w-full text-left group">
+<div class="flex flex-col border-b border-[#212225] py-lg group-hover:pl-sm transition-all duration-300">
+<span class="font-headline-md text-[20px] leading-[28px] text-primary tracking-wide">B. Beaumont</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Architectural Digest</span>
+</div>
+</button>
+<button class="w-full text-left group">
+<div class="flex flex-col border-b border-[#212225] py-lg group-hover:pl-sm transition-all duration-300">
+<span class="font-headline-md text-[20px] leading-[28px] text-primary tracking-wide">C. D'Ascoyne</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Duke of Chalfont</span>
+</div>
+</button>
+<button class="w-full text-left group">
+<div class="flex flex-col border-b border-[#212225] py-lg group-hover:pl-sm transition-all duration-300">
+<span class="font-headline-md text-[20px] leading-[28px] text-primary tracking-wide">H. Roark</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-xs">Stanton &amp; Partners</span>
+</div>
+</button>
+</div>
+</div>
+</div>
+<div class="w-full h-px bg-[#212225] my-huge"></div>
+<!-- Empty State -->
+<div class="px-xxl py-huge flex flex-col items-center justify-center text-center mt-xl">
+<span class="font-label-caps text-[14px] leading-[20px] uppercase tracking-[0.2em] text-primary mb-md">No connections yet.</span>
+<span class="font-body-lg text-body-lg text-on-surface-variant">Flip your card to share.</span>
+</div>
+<!-- Decorative bottom spacing to simulate infinite scroll/void -->
+<div class="h-32"></div>
+</div></main></body></html>

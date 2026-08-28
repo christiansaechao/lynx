@@ -1,0 +1,130 @@
+import { PropsWithChildren, useEffect, useState } from 'react';
+import { Pressable, ScrollView, StyleSheet } from 'react-native';
+import Animated, { FadeIn, FadeOut, runOnJS, SlideInDown, SlideOutDown } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { ThemedText } from '@/components/themed-text';
+import { ThemedView } from '@/components/themed-view';
+import { Motion, Spacing } from '@/constants/theme';
+
+// Slack over the exit duration before force-unmounting, so the timer never
+// beats an animation that is about to finish on its own.
+const EXIT_GRACE_MS = 80;
+
+interface EditorSheetProps extends PropsWithChildren {
+  title: string;
+  visible: boolean;
+  onClose: () => void;
+}
+
+export function EditorSheet({ title, visible, onClose, children }: EditorSheetProps) {
+  // The sheet outlives `visible` by one animation so SlideOutDown has
+  // something to play against.
+  const [mounted, setMounted] = useState(visible);
+  const insets = useSafeAreaInsets();
+
+  useEffect(() => {
+    if (visible) {
+      setMounted(true);
+      return;
+    }
+
+    // Unmounting used to be driven solely by SlideOutDown's withCallback.
+    // That callback does not fire if the exit is interrupted — or if the
+    // screen it lives on is navigated away from mid-animation — and the
+    // sheet then stays mounted forever with its full-screen scrim over
+    // everything, which makes the app untappable. The timer is the
+    // authority; the callback below just gets us there sooner when the
+    // animation does finish cleanly.
+    const timeout = setTimeout(() => setMounted(false), Motion.durations.base + EXIT_GRACE_MS);
+    return () => clearTimeout(timeout);
+  }, [visible]);
+
+  if (!mounted) return null;
+
+  return (
+    <>
+      <Animated.View
+        entering={FadeIn.duration(Motion.durations.fast)}
+        exiting={FadeOut.duration(Motion.durations.base)}
+        style={StyleSheet.absoluteFill}>
+        <Pressable style={styles.scrim} onPress={onClose} />
+      </Animated.View>
+      <Animated.View
+        entering={SlideInDown.duration(Motion.durations.base)}
+        exiting={SlideOutDown.duration(Motion.durations.base).withCallback((finished) => {
+          if (finished) runOnJS(setMounted)(false);
+        })}
+        style={[
+          styles.sheetWrap,
+          // Landscape-locked: the notch / Dynamic Island and the home
+          // indicator are on the device's left and right physical edges, not
+          // the top or bottom. Inset the whole sheet clear of both so its
+          // rounded corners, header and content never slide under either.
+          { paddingLeft: insets.left, paddingRight: insets.right, paddingTop: insets.top + Spacing.md },
+        ]}>
+        <ThemedView
+          type="backgroundElement"
+          // The wrapper is pinned top-to-bottom so this sheet fills at most
+          // the space above the home indicator and never pushes its header
+          // off the top of the screen -- content beyond the maxHeight cap
+          // scrolls inside the ScrollView instead of overflowing.
+          style={[
+            styles.sheet,
+            { paddingBottom: Math.max(insets.bottom, Spacing.lg) },
+          ]}>
+          <Pressable style={styles.header} onPress={onClose} hitSlop={Spacing.sm}>
+            <ThemedText variant="label">{title}</ThemedText>
+            <ThemedText variant="button">Done</ThemedText>
+          </Pressable>
+          <ScrollView showsVerticalScrollIndicator={false} style={styles.scroll}>
+            {children}
+          </ScrollView>
+        </ThemedView>
+      </Animated.View>
+    </>
+  );
+}
+
+const styles = StyleSheet.create({
+  // Fills its absoluteFill parent. Without flex the Pressable collapses to
+  // zero size: the dim still paints from the parent, but tapping it never
+  // hits anything, so tap-outside-to-close silently does nothing.
+  scrim: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+  },
+  sheetWrap: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    // Anchor the sheet to the bottom; it grows upward only as far as the
+    // top inset applied inline, then its own ScrollView takes over.
+    justifyContent: 'flex-end',
+  },
+  sheet: {
+    borderTopLeftRadius: Spacing.md,
+    borderTopRightRadius: Spacing.md,
+    paddingTop: Spacing.lg,
+    paddingHorizontal: Spacing.lg,
+    // Cap growth so a tall sheet stops well short of the card above it,
+    // rather than filling the whole area between the notch and the bottom.
+    maxHeight: '75%',
+  },
+  scroll: {
+    // flexGrow: 0 keeps the ScrollView (and its parent sheet) sized to its
+    // content up to the sheet's maxHeight, rather than always stretching to
+    // fill it -- a short sheet (e.g. "Add Link") should stay compact.
+    flexGrow: 0,
+    flexShrink: 1,
+    marginTop: Spacing.md,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: Spacing.sm,
+  },
+});

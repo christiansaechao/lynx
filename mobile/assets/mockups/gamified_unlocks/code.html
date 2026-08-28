@@ -1,0 +1,113 @@
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><style>@font-face{font-family:'Hanken Grotesk';src:url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;700&display=swap');}@font-face{font-family:'EB Garamond';src:url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&display=swap');}@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#121316;color:#e3e2e6;-webkit-font-smoothing:antialiased;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"tertiary-container":"#e3e3de","error-container":"#93000a","on-tertiary":"#30312e","surface-container-high":"#292a2d","on-tertiary-fixed":"#1b1c19","on-primary-fixed":"#1a1c1c","secondary-container":"#45494f","inverse-primary":"#5d5f5f","on-secondary-container":"#b5b9bf","on-secondary":"#2c3136","on-error-container":"#ffdad6","primary":"#ffffff","outline-variant":"#444748","surface-container-highest":"#343538","surface-bright":"#38393c","primary-fixed":"#e2e2e2","surface-dim":"#121316","surface-variant":"#343538","tertiary-fixed-dim":"#c7c7c2","on-tertiary-container":"#646561","tertiary-fixed":"#e3e3de","on-tertiary-fixed-variant":"#464744","on-primary-fixed-variant":"#454747","on-primary-container":"#636565","tertiary":"#ffffff","on-background":"#e3e2e6","surface":"#121316","primary-container":"#e2e2e2","on-surface":"#e3e2e6","surface-container-low":"#1a1b1e","inverse-on-surface":"#2f3033","primary-fixed-dim":"#c6c6c7","background":"#121316","secondary-fixed":"#dfe3e9","surface-tint":"#c6c6c7","inverse-surface":"#e3e2e6","on-error":"#690005","error":"#ffb4ab","on-secondary-fixed-variant":"#43474c","surface-container":"#1e2022","surface-container-lowest":"#0d0e11","secondary":"#c3c7cd","on-surface-variant":"#c4c7c8","on-secondary-fixed":"#171c21","on-primary":"#2f3131","outline":"#8e9192","secondary-fixed-dim":"#c3c7cd"},borderRadius:{DEFAULT:"0rem",lg:"0rem",xl:"0rem",full:"9999px"},spacing:{lg:"16px",md:"8px",huge:"64px",xs:"2px",xl:"24px",sm:"4px",xxl:"32px"},fontFamily:{"body-sm":["Hanken Grotesk"],"headline-md":["EB Garamond"],"label-caps":["Hanken Grotesk"],"display-lg-mobile":["EB Garamond"],"body-lg":["Hanken Grotesk"],"display-lg":["EB Garamond"]},fontSize:{'body-sm':['14px',{lineHeight:'20px',letterSpacing:'0.01em',fontWeight:'400'}],'headline-md':['24px',{lineHeight:'32px',letterSpacing:'0.02em',fontWeight:'500'}],'label-caps':['11px',{lineHeight:'16px',letterSpacing:'0.15em',fontWeight:'700'}],'display-lg-mobile':['32px',{lineHeight:'36px',letterSpacing:'-0.01em',fontWeight:'400'}],'body-lg':['16px',{lineHeight:'24px',letterSpacing:'0.01em',fontWeight:'400'}],'display-lg':['48px',{lineHeight:'52px',letterSpacing:'-0.02em',fontWeight:'400'}]}}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-lg text-on-surface"><header class="fixed top-0 inset-x-0 z-50 bg-surface/80 backdrop-blur-xl pt-safe"><div class="h-20 px-xxl flex items-center justify-between"><div class="flex items-center gap-md"><button class="w-10 h-10 flex items-center justify-start text-on-surface hover:opacity-50 transition-opacity" onclick="history.back()"><span class="material-symbols-outlined text-[20px]">arrow_back</span></button><span class="font-display-lg-mobile text-display-lg-mobile lowercase tracking-tighter">lynx.</span></div><div class="flex items-center gap-md"><span class="font-label-caps text-label-caps uppercase opacity-40 mr-md">Utility Console</span><img alt="Profile" class="w-8 h-8 rounded-full object-cover grayscale border border-outline/20" src="https://lh3.googleusercontent.com/aida/AEtjO1W0FAf-hwGO_tIEk4BMh-Xft4wispveKpwvMsW-gq1daJZQ0aFuwwKl4GcmsX1hCOyXQ3zqIUsVy8DRIDMybkADBzRgZSZnimfes0AkzZsuXKynoJawi441QKb6AGR2vxwtfkQOX4RjyNfPYqRrl8uzuZTjtl2VXLJodNVaLO0xWf_qwOktP1h-JslJBpTunVLCBMOXJnCesNChx86RJiRrO55bZ-vhGAZHZh0luXyGZKVWgQ_ikd5kXOI"/></div></div></header><main class="flex flex-col relative w-full px-xxl pt-20 bg-surface min-h-screen"><div class="flex flex-col w-full relative">
+<!-- Header / Context -->
+<div class="px-lg pt-xxl pb-xl border-b border-surface-container-high relative overflow-hidden">
+<!-- Subtle grain/texture overlay on header -->
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+<div class="relative z-10 flex flex-col gap-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Milestones</span>
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-on-surface tracking-tighter">Ascension.</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-[280px]">Expand your network to access exclusive material grades.</p>
+</div>
+</div>
+<!-- Progress Path -->
+<div class="px-lg py-xl flex flex-col gap-xl relative">
+<!-- Connecting Line (Vertical) -->
+<div class="absolute left-[39px] top-[48px] bottom-[24px] w-[1px] bg-surface-container-high z-0"></div>
+<!-- Milestone 1: Achieved (10 Cards) -->
+<div class="relative z-10 flex items-start gap-lg opacity-60">
+<div class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-surface-container border border-outline-variant">
+<span class="material-symbols-outlined text-[20px] text-on-surface">close</span>
+</div>
+<div class="flex flex-col pt-sm">
+<span class="font-label-caps text-label-caps text-on-surface uppercase">Initiate</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-xs">10 connections established.</span>
+</div>
+</div>
+<!-- Milestone 2: Active (50 Cards) -->
+<div class="relative z-10 flex items-start gap-lg">
+<div class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-surface border border-primary transition-all duration-700 ease-out" id="active-milestone-node">
+<div class="w-2 h-2 bg-primary animate-pulse"></div>
+</div>
+<div class="flex flex-col flex-1 pt-xs">
+<div class="flex justify-between items-end mb-sm">
+<span class="font-headline-md text-headline-md text-on-surface leading-none">Associate</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">48 / 50</span>
+</div>
+<!-- Progress Bar -->
+<div class="h-[2px] w-full bg-surface-container-high relative overflow-hidden mb-md">
+<div class="absolute left-0 top-0 bottom-0 bg-primary w-[96%] transition-all duration-1000 ease-out"></div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant italic">You only need 2 more connections to unlock the Holographic Prism texture.</p>
+</div>
+</div>
+<!-- Milestone 3: Locked (100 Cards) -->
+<div class="relative z-10 flex items-start gap-lg opacity-30">
+<div class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-surface border border-surface-container-high">
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">lock</span>
+</div>
+<div class="flex flex-col pt-sm">
+<span class="font-label-caps text-label-caps text-on-surface uppercase">Executive</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-xs">100 connections required.</span>
+</div>
+</div>
+</div>
+<!-- Divider -->
+<div class="h-[1px] w-full bg-surface-container-high my-md"></div>
+<!-- Reward Reveal Section (For Milestone 1) -->
+<div class="px-lg py-xl flex flex-col gap-lg">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Recent Acquisition</span>
+</div>
+<!-- The Object / Card Swatch -->
+<div class="w-full bg-[#1A1A1A] border border-outline-variant p-md relative overflow-hidden group cursor-pointer" onclick="revealReward(this)">
+<!-- Cardstock simulation -->
+<div class="relative w-full aspect-[1.75/1] bg-[#FBFAF5] border border-[#E5E4DF] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.05)] flex flex-col items-center justify-center overflow-hidden transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" id="reward-card">
+<!-- Texture overlay -->
+<div class="absolute inset-0 opacity-40 mix-blend-multiply pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noise%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noise)%22/%3E%3C/svg%3E');"></div>
+<span class="font-display-lg-mobile text-[28px] text-[#1A1A1A] relative z-10 opacity-0 transition-opacity duration-700 delay-300" id="reward-text">Silian Rail</span>
+<span class="font-label-caps text-[9px] text-[#1A1A1A]/60 relative z-10 mt-2 opacity-0 transition-opacity duration-700 delay-500 uppercase tracking-[0.2em]" id="reward-subtext">35pt Cotton Stock</span>
+</div>
+<!-- Wrapping / Gift Box Simulation over the card -->
+<div class="absolute inset-md bg-surface-container flex items-center justify-center z-20 border border-outline-variant transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] origin-bottom" id="reward-cover">
+<div class="flex flex-col items-center gap-sm">
+<span class="material-symbols-outlined text-[24px] text-on-surface">package_2</span>
+<span class="font-label-caps text-label-caps text-on-surface uppercase">Tap to unwrap</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  function revealReward(container) {
+    const cover = container.querySelector('#reward-cover');
+    const text = container.querySelector('#reward-text');
+    const subtext = container.querySelector('#reward-subtext');
+    const card = container.querySelector('#reward-card');
+    
+    // Animate cover sliding down/fading
+    cover.style.transform = 'translateY(10px) scale(0.95)';
+    cover.style.opacity = '0';
+    cover.style.pointerEvents = 'none';
+    
+    // Slight pop to the card
+    card.style.transform = 'scale(1.02)';
+    setTimeout(() => {
+      card.style.transform = 'scale(1)';
+    }, 300);
+
+    // Fade in text
+    text.style.opacity = '1';
+    subtext.style.opacity = '1';
+    
+    // Haptic feedback simulation if available
+    if (window.navigator && window.navigator.vibrate) {
+      window.navigator.vibrate([10, 30, 10]);
+    }
+  }
+</script></main></body></html>

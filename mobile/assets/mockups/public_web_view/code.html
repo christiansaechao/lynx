@@ -1,0 +1,105 @@
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#121316;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface":"#121316","on-surface":"#e3e2e6","primary":"#ffffff"},fontFamily:{"body-lg":["Hanken Grotesk"],"display-lg":["EB Garamond"]}}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@100..900&family=Hanken+Grotesk:wght@100..900&display=swap" rel="stylesheet"/><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface flex flex-col min-h-screen"><main class="flex flex-col flex-1 relative w-full"><div class="flex flex-col w-full h-full justify-center items-center relative overflow-hidden bg-surface-dim">
+<!-- Atmospheric Background Layers -->
+<div class="absolute inset-0 z-0 pointer-events-none opacity-20" style="background: radial-gradient(circle at 50% 50%, var(--tw-colors-surface-container-high) 0%, transparent 60%);">
+</div>
+<!-- Main Content Container -->
+<div class="z-10 flex flex-col items-center justify-center w-full px-[32px] pt-[64px] pb-[64px] gap-[64px]">
+<!-- Card Assembly Container -->
+<div class="relative w-[320px] h-[480px] perspective-1000 group cursor-pointer" onclick="this.classList.toggle('flipped')">
+<!-- Card Inner Assembly for 3D rotation -->
+<div class="relative w-full h-full transition-transform duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)] transform-style-3d group-[.flipped]:rotate-y-180">
+<!-- FRONT FACE (The Object) -->
+<div class="absolute inset-0 w-full h-full backface-hidden flex flex-col justify-between p-[32px] bg-[#FBFAF5] shadow-[24px_32px_64px_rgba(0,0,0,0.4)]" style="box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1), 0 20px 40px rgba(0,0,0,0.5); border: 1px solid rgba(0,0,0,0.05);">
+<!-- Subtle paper texture overlay -->
+<div class="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-multiply" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');">
+</div>
+<!-- Front Content -->
+<div class="relative z-10 flex flex-col items-start gap-[8px]">
+<span class="font-display-lg-mobile text-[#1A1A1A] tracking-tighter leading-none">Pierce & Pierce</span>
+<span class="font-label-caps text-[#1A1A1A] tracking-widest uppercase opacity-60">Mergers and Acquisitions</span>
+</div>
+<div class="relative z-10 flex flex-col items-start gap-[4px] mt-auto">
+<span class="font-display-lg-mobile text-[#1A1A1A] tracking-tight">Patrick Bateman</span>
+<span class="font-body-sm text-[#1A1A1A] italic opacity-80">Vice President</span>
+</div>
+<!-- Decorative sharp line -->
+<div class="relative z-10 w-full h-[1px] bg-[#1A1A1A] opacity-20 mt-[32px] mb-[16px]"></div>
+<div class="relative z-10 flex flex-col items-start gap-[8px]">
+<span class="font-label-caps text-[#1A1A1A] tracking-widest">358 Exchange Place, New York, NY 10099</span>
+<span class="font-label-caps text-[#1A1A1A] tracking-widest">212 555 6342</span>
+</div>
+</div>
+<!-- BACK FACE (Peeking/Reverse) -->
+<div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 flex flex-col justify-center items-center bg-[#FBFAF5]" style="box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05);">
+<!-- Subtle paper texture overlay -->
+<div class="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-multiply" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');">
+</div>
+<!-- QR Code Placeholder (Rendered as sharp geometric SVG for aesthetic) -->
+<div class="relative z-10 w-[120px] h-[120px] border border-[#1A1A1A] p-[8px] flex flex-wrap gap-[2px]">
+<!-- Abstract blocks for QR rep -->
+<div class="w-1/3 h-1/3 bg-[#1A1A1A]"></div><div class="w-1/3 h-1/3 bg-transparent"></div><div class="w-1/3 h-1/3 bg-[#1A1A1A]"></div>
+<div class="w-1/3 h-1/3 bg-transparent"></div><div class="w-1/3 h-1/3 bg-[#1A1A1A]"></div><div class="w-1/3 h-1/3 bg-transparent"></div>
+<div class="w-1/3 h-1/3 bg-[#1A1A1A]"></div><div class="w-1/3 h-1/3 bg-[#1A1A1A]"></div><div class="w-1/3 h-1/3 bg-[#1A1A1A]"></div>
+</div>
+<span class="relative z-10 font-label-caps text-[#1A1A1A] tracking-widest mt-[24px]">SCAN TO SAVE</span>
+</div>
+</div>
+<!-- Stack simulation offsets (The Void Level 0 -> Level 2 Object) -->
+<div class="absolute inset-0 w-full h-full bg-[#FBFAF5] translate-x-[2px] translate-y-[2px] -z-10" style="border: 1px solid rgba(0,0,0,0.1);"></div>
+<div class="absolute inset-0 w-full h-full bg-[#FBFAF5] translate-x-[4px] translate-y-[4px] -z-20" style="border: 1px solid rgba(0,0,0,0.1);"></div>
+<div class="absolute inset-0 w-full h-full bg-[#FBFAF5] translate-x-[6px] translate-y-[6px] -z-30 opacity-50" style="border: 1px solid rgba(0,0,0,0.1);"></div>
+<!-- Interaction Hint -->
+<div class="absolute -right-[16px] top-1/2 -translate-y-1/2 flex items-center justify-center w-[32px] h-[32px] bg-[#212225] text-primary transition-opacity duration-300 group-[.flipped]:opacity-0">
+<span class="material-symbols-outlined text-[16px]">touch_app</span>
+</div>
+</div>
+<!-- The Call to Action -->
+<div class="flex flex-col w-full gap-[24px] max-w-[400px]">
+<button class="w-full bg-primary text-surface-dim font-body-lg font-bold uppercase tracking-widest py-[24px] px-[32px] flex items-center justify-center gap-[16px] hover:bg-[#E2E2E2] transition-colors active:scale-[0.98]">
+<span>Save Contact</span>
+<span class="material-symbols-outlined">download</span>
+</button>
+<button class="w-full bg-transparent text-primary font-body-sm uppercase tracking-widest py-[16px] px-[32px] border border-primary hover:bg-[#212225] transition-colors flex items-center justify-center gap-[8px]">
+                Create Your Own Lynx Card
+            </button>
+</div>
+</div>
+<style>
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        
+        /* Subtle float animation for the card assembly */
+        @keyframes subtleFloat {
+            0% { transform: translateY(0px) rotateX(2deg) rotateY(-2deg); }
+            50% { transform: translateY(-8px) rotateX(-1deg) rotateY(1deg); }
+            100% { transform: translateY(0px) rotateX(2deg) rotateY(-2deg); }
+        }
+        
+        .perspective-1000 {
+            animation: subtleFloat 8s ease-in-out infinite;
+        }
+        
+        /* Disable float on flip to prevent weird clipping */
+        .perspective-1000.flipped {
+            animation: none;
+        }
+    </style>
+</div></main></body></html>

@@ -1,0 +1,66 @@
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Hanken+Grotesk:wght@400;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@100..900&family=Hanken+Grotesk:wght@100..900&display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-container-highest": "#343538", "inverse-on-surface": "#2f3033", "on-primary": "#2f3131", "tertiary-container": "#e3e3de", "surface-container-lowest": "#0d0e11", "error-container": "#93000a", "tertiary-fixed": "#e3e3de", "on-background": "#e3e2e6", "on-secondary-container": "#b5b9bf", "outline": "#8e9192", "secondary": "#c3c7cd", "background": "#121316", "on-error": "#690005", "primary-fixed": "#e2e2e2", "secondary-fixed-dim": "#c3c7cd", "on-tertiary-container": "#646561", "outline-variant": "#444748", "surface-dim": "#121316", "surface-tint": "#c6c6c7", "inverse-surface": "#e3e2e6", "on-tertiary-fixed": "#1b1c19", "on-primary-fixed": "#1a1c1c", "primary-fixed-dim": "#c6c6c7", "on-secondary-fixed-variant": "#43474c", "on-tertiary-fixed-variant": "#464744", "secondary-fixed": "#dfe3e9", "surface": "#121316", "primary": "#ffffff", "on-primary-fixed-variant": "#454747", "tertiary": "#ffffff", "on-error-container": "#ffdad6", "inverse-primary": "#5d5f5f", "on-surface": "#e3e2e6", "surface-container-low": "#1a1b1e", "on-secondary-fixed": "#171c21", "on-surface-variant": "#c4c7c8", "error": "#ffb4ab", "secondary-container": "#45494f", "on-tertiary": "#30312e", "surface-bright": "#38393c", "primary-container": "#e2e2e2", "surface-container": "#1e2022", "on-secondary": "#2c3136", "on-primary-container": "#636565", "tertiary-fixed-dim": "#c7c7c2", "surface-variant": "#343538", "surface-container-high": "#292a2d" }, "borderRadius": { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px" }, "spacing": { "huge": "64px", "xxl": "32px", "md": "8px", "xs": "2px", "xl": "24px", "lg": "16px", "sm": "4px" }, "fontFamily": { "display-lg": ["EB Garamond"], "headline-md": ["EB Garamond"], "body-sm": ["Hanken Grotesk"], "display-lg-mobile": ["EB Garamond"], "body-lg": ["Hanken Grotesk"], "label-caps": ["Hanken Grotesk"] }, "fontSize": { "display-lg": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "400" }], "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0.02em", "fontWeight": "500" }], "body-sm": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "400" }], "display-lg-mobile": ["32px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0.01em", "fontWeight": "400" }], "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "700" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-background min-h-screen"><main class="w-full"><div class="flex flex-col w-full h-full bg-[#000000] relative items-center justify-center p-xxl sm:py-huge overflow-hidden">
+<!-- The Void (Level 0) - Pure Black Background handled by inline style above to override shell if needed, though shell is already dark. We enforce #000000 as per spec -->
+<style>
+    /* Ensure the main container truly acts as The Void */
+    main { background-color: #000000 !important; }
+    body { background-color: #000000 !important; }
+  </style>
+<!-- The Object (Level 2) - Business Card Back -->
+<div class="relative w-full max-w-[600px] aspect-[9/16] sm:aspect-[16/9] bg-[#FBFAF5] flex flex-col justify-between p-xl overflow-hidden shadow-[inset_0_0_0_1px_rgba(26,26,26,0.1)]">
+<!-- Paper Texture Overlay -->
+<div class="absolute inset-0 pointer-events-none opacity-40 mix-blend-multiply" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+<!-- Top Section: Header -->
+<div class="relative z-10 w-full flex justify-between items-start">
+<div class="font-display-lg-mobile text-[#1A1A1A] tracking-tighter leading-none">lynx.</div>
+<div class="font-label-caps text-[#1A1A1A] uppercase opacity-60 mt-xs">Exchange</div>
+</div>
+<!-- Center Section: Master QR & App Links -->
+<div class="relative z-10 flex flex-col items-center justify-center flex-1 py-xl">
+<!-- Prominent Master QR Code -->
+<div class="w-48 h-48 bg-[#1A1A1A] p-sm mb-lg shadow-[inset_0_0_0_1px_rgba(251,250,245,0.2)]">
+<!-- Minimalist QR Representation (Placeholder for actual QR) -->
+<svg class="w-full h-full fill-[#FBFAF5]" viewbox="0 0 100 100">
+<path d="M0,0 H30 V30 H0 Z M10,10 H20 V20 H10 Z"></path>
+<path d="M70,0 H100 V30 H70 Z M80,10 H90 V20 H80 Z"></path>
+<path d="M0,70 H30 V100 H0 Z M10,80 H20 V90 H10 Z"></path>
+<path d="M40,0 H60 V20 H40 Z"></path>
+<path d="M80,40 H100 V60 H80 Z"></path>
+<path d="M40,40 H60 V60 H40 Z"></path>
+<path d="M20,40 H40 V50 H20 Z"></path>
+<path d="M60,80 H100 V100 H60 Z"></path>
+<path d="M40,80 H50 V100 H40 Z"></path>
+<path d="M70,60 H90 V70 H70 Z"></path>
+</svg>
+</div>
+<p class="font-label-caps text-[#1A1A1A] text-center mb-xl">Scan to Connect</p>
+<!-- Minimalist Monochrome App Grid -->
+<div class="flex gap-lg">
+<!-- LinkedIn Icon -->
+<button class="w-12 h-12 flex items-center justify-center border border-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-[#FBFAF5] transition-colors duration-300 group">
+<svg class="w-5 h-5 fill-current" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path>
+</svg>
+</button>
+<!-- GitHub Icon -->
+<button class="w-12 h-12 flex items-center justify-center border border-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-[#FBFAF5] transition-colors duration-300 group">
+<svg class="w-5 h-5 fill-current" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 0C5.37 0 0 5.373 0 12c0 5.302 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12-12"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- Bottom Section: The Secret Door -->
+<div class="relative z-10 w-full flex justify-end items-end mt-auto">
+<button aria-label="Settings" class="w-8 h-8 flex items-center justify-center opacity-30 hover:opacity-100 transition-opacity duration-500 focus:outline-none">
+<span class="material-symbols-outlined text-[#1A1A1A] text-[18px]">settings</span>
+</button>
+</div>
+</div>
+</div></main></body></html>

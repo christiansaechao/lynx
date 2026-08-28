@@ -1,0 +1,137 @@
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&amp;family=Hanken+Grotesk:wght@400;700&amp;family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@100..900&amp;family=Hanken+Grotesk:wght@100..900&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-container-highest": "#343538", "inverse-on-surface": "#2f3033", "on-primary": "#2f3131", "tertiary-container": "#e3e3de", "surface-container-lowest": "#0d0e11", "error-container": "#93000a", "tertiary-fixed": "#e3e3de", "on-background": "#e3e2e6", "on-secondary-container": "#b5b9bf", "outline": "#8e9192", "secondary": "#c3c7cd", "background": "#121316", "on-error": "#690005", "primary-fixed": "#e2e2e2", "secondary-fixed-dim": "#c3c7cd", "on-tertiary-container": "#646561", "outline-variant": "#444748", "surface-dim": "#121316", "surface-tint": "#c6c6c7", "inverse-surface": "#e3e2e6", "on-tertiary-fixed": "#1b1c19", "on-primary-fixed": "#1a1c1c", "primary-fixed-dim": "#c6c6c7", "on-secondary-fixed-variant": "#43474c", "on-tertiary-fixed-variant": "#464744", "secondary-fixed": "#dfe3e9", "surface": "#121316", "primary": "#ffffff", "on-primary-fixed-variant": "#454747", "tertiary": "#ffffff", "on-error-container": "#ffdad6", "inverse-primary": "#5d5f5f", "on-surface": "#e3e2e6", "surface-container-low": "#1a1b1e", "on-secondary-fixed": "#171c21", "on-surface-variant": "#c4c7c8", "error": "#ffb4ab", "secondary-container": "#45494f", "on-tertiary": "#30312e", "surface-bright": "#38393c", "primary-container": "#e2e2e2", "surface-container": "#1e2022", "on-secondary": "#2c3136", "on-primary-container": "#636565", "tertiary-fixed-dim": "#c7c7c2", "surface-variant": "#343538", "surface-container-high": "#292a2d" }, "borderRadius": { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px" }, "spacing": { "huge": "64px", "xxl": "32px", "md": "8px", "xs": "2px", "xl": "24px", "lg": "16px", "sm": "4px" }, "fontFamily": { "display-lg": ["EB Garamond"], "headline-md": ["EB Garamond"], "body-sm": ["Hanken Grotesk"], "display-lg-mobile": ["EB Garamond"], "body-lg": ["Hanken Grotesk"], "label-caps": ["Hanken Grotesk"] }, "fontSize": { "display-lg": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "400" }], "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0.02em", "fontWeight": "500" }], "body-sm": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "400" }], "display-lg-mobile": ["32px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0.01em", "fontWeight": "400" }], "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "700" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head><body class="bg-background min-h-screen"><main class="w-full"><div class="flex flex-col w-full h-full relative overflow-hidden bg-background">
+<div class="flex-1 flex flex-col justify-center items-center px-xxl py-huge relative z-10 w-full h-full">
+<div class="relative w-full max-w-[600px] mx-auto bg-[#FBFAF5] shadow-2xl transition-transform duration-700 ease-out hover:scale-[1.02]" style="aspect-ratio: 3.5/2; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.5);">
+<div class="absolute inset-0 opacity-[0.03] mix-blend-multiply pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+<!-- STITCH_SHADER_START:ANIMATION_5 class="absolute inset-0 w-full h-full pointer-events-none opacity-20 mix-blend-color-burn" -->
+<div class="absolute inset-0 w-full h-full pointer-events-none opacity-20 mix-blend-color-burn" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_5" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_5');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+varying vec2 v_texCoord;
+uniform float u_time;
+uniform vec2 u_resolution;
+
+void main() {
+    vec2 uv = v_texCoord;
+    // Subtly shifting off-white "Bone" texture with paper grain
+    float noise = fract(sin(dot(uv * u_resolution, vec2(12.9898, 78.233))) * 43758.5453);
+    vec3 color = mix(vec3(0.984, 0.98, 0.961), vec3(0.914, 0.89, 0.839), uv.y + uv.x * 0.2);
+    color += noise * 0.02; // Fine grain
+    gl_FragColor = vec4(color, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_5 -->
+<div class="relative h-full flex flex-col justify-between p-lg md:p-xl text-[#1A1A1A]">
+<div class="flex justify-between items-start w-full">
+<div class="font-display-lg text-headline-md tracking-widest uppercase opacity-90">
+            Pierce &amp; Pierce
+          </div>
+<div class="font-display-lg text-body-sm opacity-60">
+            Mergers &amp; Acquisitions
+          </div>
+</div>
+<div class="flex flex-col items-center justify-center space-y-sm flex-1">
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg font-medium tracking-tight">
+            Patrick Bateman
+          </h1>
+<p class="font-body-sm text-label-caps uppercase tracking-[0.2em] opacity-70">
+            Vice President
+          </p>
+</div>
+<div class="flex justify-between items-end w-full">
+<div class="flex flex-col space-y-xs">
+<span class="font-body-sm text-[10px] uppercase tracking-widest opacity-60">358 Exchange Place</span>
+<span class="font-body-sm text-[10px] uppercase tracking-widest opacity-60">New York, N.Y. 10099</span>
+</div>
+<div class="flex flex-col space-y-xs text-right">
+<span class="font-body-sm text-[10px] uppercase tracking-widest opacity-60">212 555 6325</span>
+<span class="font-body-sm text-[10px] uppercase tracking-widest opacity-60">Fax 212 555 6390</span>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-huge left-1/2 -translate-x-1/2 flex flex-col items-center space-y-md animate-pulse opacity-50">
+<span class="font-body-sm text-label-caps text-on-background uppercase tracking-widest">Flip Card</span>
+<span class="material-symbols-outlined text-on-background">expand_more</span>
+</div>
+</div>
+</div></main></body></html>

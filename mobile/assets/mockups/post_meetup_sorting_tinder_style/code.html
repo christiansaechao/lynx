@@ -1,0 +1,120 @@
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-bright": "#38393c", "surface-container-lowest": "#0d0e11", "on-primary": "#2f3131", "on-tertiary-fixed": "#1b1c19", "on-primary-container": "#636565", "on-secondary-container": "#b5b9bf", "background": "#121316", "inverse-on-surface": "#2f3033", "on-surface-variant": "#c4c7c8", "surface-tint": "#c6c6c7", "surface-container-high": "#292a2d", "surface-dim": "#121316", "tertiary-container": "#e3e3de", "on-primary-fixed": "#1a1c1c", "on-tertiary-fixed-variant": "#464744", "secondary": "#c3c7cd", "on-tertiary": "#30312e", "surface-variant": "#343538", "primary": "#ffffff", "tertiary-fixed-dim": "#c7c7c2", "on-surface": "#e3e2e6", "surface": "#121316", "inverse-primary": "#5d5f5f", "primary-container": "#e2e2e2", "on-secondary": "#2c3136", "surface-container-highest": "#343538", "primary-fixed": "#e2e2e2", "secondary-fixed": "#dfe3e9", "outline": "#8e9192", "on-background": "#e3e2e6", "primary-fixed-dim": "#c6c6c7", "tertiary": "#ffffff", "error-container": "#93000a", "secondary-container": "#45494f", "on-secondary-fixed-variant": "#43474c", "on-primary-fixed-variant": "#454747", "on-secondary-fixed": "#171c21", "surface-container": "#1e2022", "on-tertiary-container": "#646561", "outline-variant": "#444748", "surface-container-low": "#1a1b1e", "error": "#ffb4ab", "on-error-container": "#ffdad6", "secondary-fixed-dim": "#c3c7cd", "tertiary-fixed": "#e3e3de" }, "borderRadius": { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px" }, "spacing": { "xl": "24px", "md": "8px", "lg": "16px", "xs": "2px", "sm": "4px", "xxl": "32px", "huge": "64px" }, "fontFamily": { "display-lg-mobile": ["EB Garamond"], "label-caps": ["Hanken Grotesk"], "headline-md": ["EB Garamond"], "display-lg": ["EB Garamond"], "body-lg": ["Hanken Grotesk"], "body-sm": ["Hanken Grotesk"] }, "fontSize": { "display-lg-mobile": ["32px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "700" }], "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0.02em", "fontWeight": "500" }], "display-lg": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0.01em", "fontWeight": "400" }], "body-sm": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "400" }] } } } };</script><style>@layer base { body { @apply bg-[#000000] text-on-surface antialiased; } .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } } .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; } ::-webkit-scrollbar { display: none; }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body><header class="fixed top-0 inset-x-0 z-50 bg-[#000000] pt-safe"><div class="h-20 px-xxl flex items-center justify-between border-b border-[#212225]"><div class="flex items-center gap-lg"><span class="font-display-lg-mobile text-display-lg-mobile lowercase tracking-tight">lynx.</span><div class="h-4 w-[1px] bg-[#212225] ml-2"></div><span class="font-label-caps text-label-caps uppercase text-on-surface-variant tracking-widest mt-1">Rolodex</span></div><div class="flex items-center gap-xl"><button class="flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-[20px]">search</span></button><img alt="Profile" class="w-7 h-7 rounded-full object-cover grayscale brightness-90" src="https://lh3.googleusercontent.com/aida/AEtjO1W0FAf-hwGO_tIEk4BMh-Xft4wispveKpwvMsW-gq1daJZQ0aFuwwKl4GcmsX1hCOyXQ3zqIUsVy8DRIDMybkADBzRgZSZnimfes0AkzZsuXKynoJawi441QKb6AGR2vxwtfkQOX4RjyNfPYqRrl8uzuZTjtl2VXLJodNVaLO0xWf_qwOktP1h-JslJBpTunVLCBMOXJnCesNChx86RJiRrO55bZ-vhGAZHZh0luXyGZKVWgQ_ikd5kXOI"/></div></div></header><main class="flex flex-col relative w-full pt-20 pb-huge bg-[#000000]"><div class="flex flex-col w-full px-xxl space-y-huge relative overflow-hidden" id="sorting-container">
+<!-- State 1: Resting Stack -->
+<div class="relative w-full aspect-[3/4] flex items-center justify-center isolate mb-huge mt-xl">
+<!-- Background cards simulating stack depth via tonal layering and borders -->
+<div class="absolute w-[90%] aspect-[3/4] bg-[#F4F3ED] top-6 z-0 border border-[#212225] shadow-sm transform scale-95 opacity-50 transition-transform duration-500"></div>
+<div class="absolute w-[95%] aspect-[3/4] bg-[#E8E6DF] top-3 z-10 border border-[#212225] shadow-md transform scale-95 opacity-80 transition-transform duration-500"></div>
+<!-- Top Card: Resting -->
+<div class="relative w-full aspect-[3/4] bg-[#FBFAF5] z-20 border border-[#212225] shadow-lg flex flex-col p-lg transition-transform duration-300 ease-out cursor-grab hover:scale-[1.02]" id="card-resting">
+<!-- Simulated 1px inner stroke for cardstock edge -->
+<div class="absolute inset-xs border border-[#E5E4DE] pointer-events-none"></div>
+<div class="flex-1 flex flex-col justify-center items-start pl-md">
+<h2 class="font-display-lg text-display-lg text-[#1A1A1A] tracking-tight leading-none mb-sm">Patrick<br/>Bateman</h2>
+<p class="font-label-caps text-label-caps text-[#4A4A4A] uppercase tracking-widest mt-md">Vice President</p>
+<div class="w-8 h-[1px] bg-[#1A1A1A] my-lg"></div>
+<p class="font-body-sm text-body-sm text-[#1A1A1A]">Pierce &amp; Pierce</p>
+<p class="font-body-sm text-body-sm text-[#1A1A1A] opacity-70">Mergers and Acquisitions</p>
+</div>
+<div class="mt-auto flex justify-between items-end w-full px-sm pb-sm">
+<span class="font-label-caps text-[10px] text-[#4A4A4A] uppercase tracking-widest">Bone</span>
+<span class="font-label-caps text-[10px] text-[#4A4A4A] uppercase tracking-widest">Silian Rail</span>
+</div>
+</div>
+<div class="absolute bottom-[-32px] left-0 right-0 text-center z-30 pointer-events-none">
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-widest opacity-40">State 1: Resting Stack</span>
+</div>
+</div>
+<!-- State 2: Mid-Swipe Right -->
+<div class="relative w-full aspect-[3/4] flex items-center justify-center isolate mb-huge mt-huge">
+<!-- Background cards -->
+<div class="absolute w-[95%] aspect-[3/4] bg-[#E8E6DF] top-3 z-10 border border-[#212225] shadow-md transform scale-[0.98] transition-transform duration-500"></div>
+<!-- Top Card: Swiping Right -->
+<div class="relative w-full aspect-[3/4] bg-[#111111] z-20 border border-[#333333] shadow-xl flex flex-col p-lg transform translate-x-8 rotate-6 pointer-events-none transition-all duration-300" style="background-image: linear-gradient(135deg, #222 0%, #000 100%);">
+<!-- Simulated texture/finish (Carbon Fiber vibe) -->
+<div class="absolute inset-xs border border-[#444] pointer-events-none mix-blend-overlay"></div>
+<!-- SWIPE LABEL -->
+<div class="absolute top-xl left-xl border border-primary px-sm py-xs transform -rotate-12 z-30">
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-widest font-bold">Star</span>
+</div>
+<div class="flex-1 flex flex-col justify-center items-start pl-md mt-xl">
+<h2 class="font-display-lg text-display-lg text-[#F0F0F0] tracking-tight leading-none mb-sm">Paul<br/>Allen</h2>
+<p class="font-label-caps text-label-caps text-[#888888] uppercase tracking-widest mt-md">Vice President</p>
+<div class="w-8 h-[1px] bg-[#F0F0F0] my-lg"></div>
+<p class="font-body-sm text-body-sm text-[#CCCCCC]">Pierce &amp; Pierce</p>
+</div>
+<div class="mt-auto flex justify-between items-end w-full px-sm pb-sm">
+<span class="font-label-caps text-[10px] text-[#666666] uppercase tracking-widest">Carbon Fiber</span>
+<span class="font-label-caps text-[10px] text-[#666666] uppercase tracking-widest">Romalian Type</span>
+</div>
+</div>
+<div class="absolute bottom-[-32px] left-0 right-0 text-center z-30 pointer-events-none">
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-widest opacity-40">State 2: Mid-Swipe Right</span>
+</div>
+</div>
+<!-- State 3: Note Prompt -->
+<div class="relative w-full aspect-[3/4] flex items-center justify-center isolate mb-huge mt-huge">
+<!-- Top Card: Paused for Note -->
+<div class="relative w-full aspect-[3/4] bg-[#D4D4CE] z-20 border border-[#212225] shadow-lg flex flex-col p-lg transform -translate-y-4 transition-transform duration-300">
+<!-- Simulated inner stroke -->
+<div class="absolute inset-xs border border-[#ECEBE6] pointer-events-none"></div>
+<div class="flex-1 flex flex-col justify-start items-start pt-lg pl-md opacity-40">
+<h2 class="font-display-lg text-[32px] leading-[36px] text-[#222222] tracking-tight mb-sm">Timothy<br/>Bryce</h2>
+<p class="font-label-caps text-[10px] text-[#555555] uppercase tracking-widest">Vice President</p>
+</div>
+<!-- Note Overlay -->
+<div class="absolute inset-0 bg-[#000000]/80 backdrop-blur-[2px] z-30 flex flex-col p-xl">
+<div class="flex-1 flex flex-col justify-center">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest mb-md border-b border-[#212225] pb-xs w-max" for="note-input">Context Note</label>
+<textarea class="w-full bg-transparent border-none font-headline-md text-headline-md text-primary focus:outline-none focus:ring-0 resize-none h-32 placeholder:text-surface-variant" id="note-input" placeholder="Met at..."></textarea>
+</div>
+<button class="w-full bg-primary text-on-primary font-label-caps text-label-caps uppercase tracking-widest py-lg mt-auto hover:bg-[#E5E5E5] transition-colors border border-primary flex items-center justify-between px-lg group">
+<span>Save Note</span>
+<span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="absolute bottom-[-32px] left-0 right-0 text-center z-30 pointer-events-none">
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-widest opacity-40">State 3: Note Prompt</span>
+</div>
+</div>
+</div>
+<script>
+    // Micro-interaction for resting card just to show it's "alive" in prototype
+    const restingCard = document.getElementById('card-resting');
+    if (restingCard) {
+        let startX = 0;
+        let startY = 0;
+        let isDragging = false;
+
+        restingCard.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            restingCard.style.transition = 'none';
+        }, {passive: true});
+
+        restingCard.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const deltaX = e.touches[0].clientX - startX;
+            const deltaY = e.touches[0].clientY - startY;
+            const rotate = deltaX * 0.05;
+            
+            // Limit movement for prototype purposes
+            if(Math.abs(deltaX) < 100) {
+                 restingCard.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(${rotate}deg)`;
+            }
+        }, {passive: true});
+
+        restingCard.addEventListener('touchend', () => {
+            isDragging = false;
+            restingCard.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            restingCard.style.transform = 'translate(0px, 0px) rotate(0deg)';
+        });
+    }
+</script></main><nav class="fixed bottom-0 inset-x-0 z-50 pb-safe bg-[#000000] border-t border-[#212225]" data-active-classes="text-primary opacity-100"><div class="flex justify-between items-center h-16 px-xxl"><a aria-current="page" class="font-label-caps uppercase tracking-widest transition-all text-primary opacity-100" data-path="rolodex" href="#">Rolodex</a><a class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant opacity-40 transition-all" data-path="folders" href="#">Folders</a><a class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant opacity-40 transition-all" data-path="insights" href="#">Insights</a></div></nav></body></html>

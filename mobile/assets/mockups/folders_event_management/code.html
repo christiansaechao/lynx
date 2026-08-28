@@ -1,0 +1,101 @@
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-bright": "#38393c", "surface-container-lowest": "#0d0e11", "on-primary": "#2f3131", "on-tertiary-fixed": "#1b1c19", "on-primary-container": "#636565", "on-secondary-container": "#b5b9bf", "background": "#121316", "inverse-on-surface": "#2f3033", "on-surface-variant": "#c4c7c8", "surface-tint": "#c6c6c7", "surface-container-high": "#292a2d", "surface-dim": "#121316", "tertiary-container": "#e3e3de", "on-primary-fixed": "#1a1c1c", "on-tertiary-fixed-variant": "#464744", "secondary": "#c3c7cd", "on-tertiary": "#30312e", "surface-variant": "#343538", "primary": "#ffffff", "tertiary-fixed-dim": "#c7c7c2", "on-surface": "#e3e2e6", "surface": "#121316", "inverse-primary": "#5d5f5f", "primary-container": "#e2e2e2", "on-secondary": "#2c3136", "surface-container-highest": "#343538", "primary-fixed": "#e2e2e2", "secondary-fixed": "#dfe3e9", "outline": "#8e9192", "on-background": "#e3e2e6", "primary-fixed-dim": "#c6c6c7", "tertiary": "#ffffff", "error-container": "#93000a", "secondary-container": "#45494f", "on-secondary-fixed-variant": "#43474c", "on-primary-fixed-variant": "#454747", "on-secondary-fixed": "#171c21", "surface-container": "#1e2022", "on-tertiary-container": "#646561", "outline-variant": "#444748", "surface-container-low": "#1a1b1e", "error": "#ffb4ab", "on-error-container": "#ffdad6", "secondary-fixed-dim": "#c3c7cd", "tertiary-fixed": "#e3e3de" }, "borderRadius": { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px" }, "spacing": { "xl": "24px", "md": "8px", "lg": "16px", "xs": "2px", "sm": "4px", "xxl": "32px", "huge": "64px" }, "fontFamily": { "display-lg-mobile": ["EB Garamond"], "label-caps": ["Hanken Grotesk"], "headline-md": ["EB Garamond"], "display-lg": ["EB Garamond"], "body-lg": ["Hanken Grotesk"], "body-sm": ["Hanken Grotesk"] }, "fontSize": { "display-lg-mobile": ["32px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "700" }], "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0.02em", "fontWeight": "500" }], "display-lg": ["48px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0.01em", "fontWeight": "400" }], "body-sm": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "400" }] } } } };</script><style>@layer base { body { @apply bg-[#000000] text-on-surface antialiased; } .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); } .pt-safe { padding-top: env(safe-area-inset-top, 0px); } } .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; } ::-webkit-scrollbar { display: none; }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body><header class="fixed top-0 inset-x-0 z-50 bg-[#000000] pt-safe"><div class="h-20 px-xxl flex items-center justify-between border-b border-[#212225]"><div class="flex items-center gap-lg"><span class="font-display-lg-mobile text-display-lg-mobile lowercase tracking-tight">lynx.</span><div class="h-4 w-[1px] bg-[#212225] ml-2"></div><span class="font-label-caps text-label-caps uppercase text-on-surface-variant tracking-widest mt-1">Folders</span></div><div class="flex items-center gap-xl"><button class="flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity"><span class="material-symbols-outlined text-[20px]">search</span></button><img alt="Profile" class="w-7 h-7 rounded-full object-cover grayscale brightness-90" src="https://lh3.googleusercontent.com/aida/AEtjO1W0FAf-hwGO_tIEk4BMh-Xft4wispveKpwvMsW-gq1daJZQ0aFuwwKl4GcmsX1hCOyXQ3zqIUsVy8DRIDMybkADBzRgZSZnimfes0AkzZsuXKynoJawi441QKb6AGR2vxwtfkQOX4RjyNfPYqRrl8uzuZTjtl2VXLJodNVaLO0xWf_qwOktP1h-JslJBpTunVLCBMOXJnCesNChx86RJiRrO55bZ-vhGAZHZh0luXyGZKVWgQ_ikd5kXOI"/></div></div></header><main class="flex flex-col relative w-full pt-20 pb-huge bg-[#000000]"><div class="flex flex-col w-full min-w-0" id="folders-container">
+<div class="px-xxl py-xl pb-md">
+<h1 class="font-display-lg text-display-lg text-on-surface tracking-tight mb-md">Folders.</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-[280px]">Organize your acquired contacts by event, location, or objective.</p>
+</div>
+<div class="flex flex-col w-full mt-lg">
+<!-- Active Folder -->
+<button class="w-full flex items-center justify-between px-xxl py-xl border-t border-[#212225] group hover:bg-[#151619] transition-colors duration-300 text-left relative overflow-hidden" onclick="triggerRipple(event)">
+<div class="flex items-baseline gap-lg relative z-10">
+<h2 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors tracking-tight">Tech Fair 2026</h2>
+<div class="flex items-center gap-sm bg-[#212225] px-2 py-1 relative">
+<div class="w-1.5 h-1.5 bg-primary animate-pulse"></div>
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-widest">Live</span>
+</div>
+</div>
+<div class="flex items-center gap-md relative z-10">
+<span class="font-body-sm text-body-sm text-on-surface-variant">142 cards</span>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">arrow_forward</span>
+</div>
+</button>
+<!-- Standard Folders -->
+<button class="w-full flex items-center justify-between px-xxl py-xl border-t border-[#212225] group hover:bg-[#151619] transition-colors duration-300 text-left relative overflow-hidden" onclick="triggerRipple(event)">
+<div class="flex items-baseline gap-lg relative z-10">
+<h2 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors tracking-tight opacity-80">Recruiting Mixer</h2>
+</div>
+<div class="flex items-center gap-md relative z-10">
+<span class="font-body-sm text-body-sm text-on-surface-variant">87 cards</span>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">arrow_forward</span>
+</div>
+</button>
+<button class="w-full flex items-center justify-between px-xxl py-xl border-t border-[#212225] group hover:bg-[#151619] transition-colors duration-300 text-left relative overflow-hidden" onclick="triggerRipple(event)">
+<div class="flex items-baseline gap-lg relative z-10">
+<h2 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors tracking-tight opacity-80">Design Summit NY</h2>
+</div>
+<div class="flex items-center gap-md relative z-10">
+<span class="font-body-sm text-body-sm text-on-surface-variant">34 cards</span>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">arrow_forward</span>
+</div>
+</button>
+<button class="w-full flex items-center justify-between px-xxl py-xl border-t border-[#212225] group hover:bg-[#151619] transition-colors duration-300 text-left relative overflow-hidden" onclick="triggerRipple(event)">
+<div class="flex items-baseline gap-lg relative z-10">
+<h2 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors tracking-tight opacity-80">General</h2>
+</div>
+<div class="flex items-center gap-md relative z-10">
+<span class="font-body-sm text-body-sm text-on-surface-variant">405 cards</span>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">arrow_forward</span>
+</div>
+</button>
+<button class="w-full flex items-center justify-between px-xxl py-xl border-t border-[#212225] group hover:bg-[#151619] transition-colors duration-300 text-left relative overflow-hidden opacity-50" onclick="triggerRipple(event)">
+<div class="flex items-baseline gap-lg relative z-10">
+<h2 class="font-headline-md text-headline-md text-on-surface transition-colors tracking-tight line-through">Archive '24</h2>
+</div>
+<div class="flex items-center gap-md relative z-10">
+<span class="font-body-sm text-body-sm text-on-surface-variant">1,024 cards</span>
+</div>
+</button>
+<div class="w-full border-t border-[#212225]"></div>
+</div>
+<div class="mt-huge px-xxl flex justify-start">
+<button class="group flex items-center gap-sm py-sm relative overflow-hidden focus:outline-none" onclick="triggerRipple(event)">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors relative z-10" style="font-size: 20px;">add</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant group-hover:text-primary transition-colors uppercase tracking-widest relative z-10 border-b border-transparent group-hover:border-primary pb-xs">Create Folder</span>
+</button>
+</div>
+</div>
+<script>
+  function triggerRipple(event) {
+    const button = event.currentTarget;
+    const ripple = document.createElement('span');
+    
+    const rect = button.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = event.clientX - rect.left - size / 2;
+    const y = event.clientY - rect.top - size / 2;
+    
+    ripple.style.width = ripple.style.height = `${size}px`;
+    ripple.style.left = `${x}px`;
+    ripple.style.top = `${y}px`;
+    
+    ripple.className = 'absolute bg-surface-variant opacity-30 rounded-full scale-0 transform-gpu z-0 pointer-events-none';
+    ripple.animate([
+      { transform: 'scale(0)', opacity: 0.3 },
+      { transform: 'scale(2.5)', opacity: 0 }
+    ], {
+      duration: 600,
+      easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+    });
+    
+    button.appendChild(ripple);
+    
+    setTimeout(() => {
+      ripple.remove();
+    }, 600);
+  }
+</script></main><nav class="fixed bottom-0 inset-x-0 z-50 pb-safe bg-[#000000] border-t border-[#212225]" data-active-classes="text-primary opacity-100"><div class="flex justify-between items-center h-16 px-xxl"><a class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant opacity-40 transition-all" data-path="rolodex" href="#">Rolodex</a><a aria-current="page" class="font-label-caps uppercase tracking-widest transition-all text-primary opacity-100" data-path="folders" href="#">Folders</a><a class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant opacity-40 transition-all" data-path="insights" href="#">Insights</a></div></nav></body></html>
