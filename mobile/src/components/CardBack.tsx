@@ -1,12 +1,12 @@
-import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
-import { LayoutChangeEvent, Platform, Pressable, StyleSheet, View } from 'react-native';
+import { LayoutChangeEvent, Pressable, StyleSheet, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
 import { CardMaterial, useCardTemplateStyle } from '@/components/CardMaterial';
 import { LinkGlyph } from '@/components/LinkGlyph';
 import { ThemedText } from '@/components/themed-text';
 import { Card, Spacing } from '@/constants/theme';
+import { useDeviceOrientation } from '@/hooks/use-device-orientation';
 import { useCardStore } from '@/store/useCardStore';
 import type { Link } from '@/types/card';
 
@@ -15,7 +15,6 @@ interface CardBackProps {
   onAddLink?: () => void;
   onSelectLink?: (id: string) => void;
   onTap?: () => void;
-  onOpenSettings?: () => void;
   /**
    * Rendered inside CardSnapshotComposite -- the face being captured as the
    * PNG that the Master QR itself points at. Suppresses the Master QR here
@@ -44,7 +43,6 @@ export function CardBack({
   onAddLink,
   onSelectLink,
   onTap,
-  onOpenSettings,
   onExpandLink,
   forSnapshot = false,
 }: CardBackProps) {
@@ -62,24 +60,40 @@ export function CardBack({
   // see and toggle those, so they stay visible while editing only.
   const visibleLinks = card.links.filter((link) => link.isActive || editable);
 
+  // The card itself is a fixed landscape object, but the screen around it
+  // no longer is (the editor frees rotation — see use-orientation-lock).
+  // Held in landscape the card fills the screen as designed and the back
+  // face just needs its quarter-turn in place to read upright; held in
+  // portrait the screen itself is already the right way round, so the
+  // rotation would turn it sideways instead of fixing it.
+  const { isLandscape } = useDeviceOrientation();
+
   // transform: rotate spins a view around its center without reflowing
-  // layout, so the wrapper has to be sized with width/height swapped before
-  // being turned 90deg — otherwise the text is upright but the box it lives
-  // in still has landscape proportions.
+  // layout, so in landscape the wrapper has to be sized with width/height
+  // swapped before being turned 90deg — otherwise the text is upright but
+  // the box it lives in still has landscape proportions. In portrait no
+  // rotation is applied, so the box keeps its natural (already-portrait)
+  // dimensions.
   const [frame, setFrame] = useState({ width: 0, height: 0 });
   const onLayout = (event: LayoutChangeEvent) => {
     const { width, height } = event.nativeEvent.layout;
     setFrame((prev) => (prev.width === width && prev.height === height ? prev : { width, height }));
   };
 
-  const rotated = { width: frame.height, height: frame.width };
+  const rotated = isLandscape
+    ? { width: frame.height, height: frame.width, transform: [{ rotate: '-90deg' as const }] }
+    : { width: frame.width, height: frame.height, transform: [] };
 
   // The Master QR anchors the top of the card and is meant to dominate it:
   // it spans the full portrait width minus the card padding and the white
   // quiet-zone plate on either side, so the only breathing room left is an
-  // even margin across the top and down both sides.
-  const masterSize = Math.max(frame.height - Card.padding * 2 - Spacing.sm * 2, 120);
-  const glyphSize = Math.max(Math.min(frame.height * 0.105, 40), 22);
+  // even margin across the top and down both sides. rotated.width is the
+  // inner box's effective width once rotation is accounted for -- frame
+  // (the outer, unrotated box) is landscape-shaped in landscape mode but
+  // already portrait-shaped in portrait mode, so sizing off frame.height
+  // directly is only correct in the landscape case.
+  const masterSize = Math.max(rotated.width - Card.padding * 2 - Spacing.sm * 2, 120);
+  const glyphSize = Math.max(Math.min(rotated.width * 0.105, 40), 22);
 
   // Exactly four slots, so the cross always reads as a cross. In the
   // editor the first free slot becomes the Add affordance; the rest stay
@@ -189,19 +203,6 @@ export function CardBack({
                   No links yet
                 </ThemedText>
               )}
-
-              {/* The cog — the secret door into the editor. Hidden while
-                  editing: you're already inside, and tapping it again just
-                  re-opens the same editing route on top of itself. */}
-              {!editable && (
-              <Pressable style={styles.cog} onPress={onOpenSettings} hitSlop={Spacing.sm}>
-                {Platform.OS === 'ios' ? (
-                  <SymbolView name="gearshape" size={22} weight="regular" tintColor={template.labelColor} />
-                ) : (
-                  <ThemedText style={[styles.cogGlyph, { color: template.labelColor }]}>⚙</ThemedText>
-                )}
-              </Pressable>
-              )}
             </View>
           </View>
         </CardMaterial>
@@ -283,14 +284,5 @@ const styles = StyleSheet.create({
   addPlus: {
     fontSize: 16,
     lineHeight: 18,
-  },
-  cog: {
-    position: 'absolute',
-    right: Spacing.sm,
-    bottom: Spacing.sm,
-  },
-  cogGlyph: {
-    fontSize: 20,
-    lineHeight: 22,
   },
 });

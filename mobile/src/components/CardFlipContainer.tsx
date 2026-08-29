@@ -1,4 +1,5 @@
 import { useRouter } from 'expo-router';
+import * as ScreenOrientation from 'expo-screen-orientation';
 import { SymbolView } from 'expo-symbols';
 import { useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
@@ -183,7 +184,6 @@ export function CardFlipContainer({
               onSelectLink={onSelectLink}
               onTap={handleTap}
               onExpandLink={onExpandLink}
-              onOpenSettings={() => (onEdit ? onEdit('back') : router.push('/editor?face=back'))}
             />
           </Animated.View>
 
@@ -195,7 +195,18 @@ export function CardFlipContainer({
           entering={FadeIn.duration(Motion.durations.base)}
           style={[styles.pencil, { pointerEvents: 'box-none' }]}>
           <Pressable
-            onPress={() => (onEdit ? onEdit(face) : router.push(`/editor?face=${face}`))}
+            onPress={() => {
+              // Free rotation here, before navigating, instead of leaving
+              // it to the editor's own useOrientationLock(DEFAULT) mount
+              // effect to race against card.tsx's still-live LANDSCAPE
+              // lock -- that race was producing a spurious
+              // portrait -> landscape -> portrait triple-rotation on entry
+              // (the mirror image of the Done-button race fixed in
+              // editor.tsx).
+              ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.DEFAULT);
+              if (onEdit) onEdit(face);
+              else router.push(`/editor?face=${face}`);
+            }}
             hitSlop={Spacing.md}
             style={styles.pencilHit}>
             <SymbolView

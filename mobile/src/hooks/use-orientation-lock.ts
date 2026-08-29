@@ -15,6 +15,21 @@ import { AppState } from 'react-native';
  * resolves only after the OS has really settled the new orientation, so
  * callers that must not lay out or animate against a stale orientation
  * (the welcome sequence on the card screen) can wait on this.
+ *
+ * Pass `ScreenOrientation.OrientationLock.DEFAULT` to free rotation instead
+ * of pinning it -- the editor uses this since which way up you hold the
+ * phone doesn't matter while editing fields, and forcing landscape there
+ * was the source of the orientation complaints. (`.ALL` is not safe here --
+ * it throws on devices whose OS/orientation support list doesn't include
+ * every orientation.)
+ *
+ * This hook only ever applies its lock on mount and on AppState "active" --
+ * it does not restore anything on unmount. A screen that sits underneath
+ * another screen freeing rotation (e.g. card.tsx under the editor modal)
+ * needs to re-apply its own lock itself when it regains focus (see
+ * card.tsx's useFocusEffect) rather than relying on the screen above it to
+ * restore things on the way out, which produces a double orientation
+ * transition during the dismiss animation.
  */
 export function useOrientationLock(lock: ScreenOrientation.OrientationLock) {
   const [ready, setReady] = useState(false);

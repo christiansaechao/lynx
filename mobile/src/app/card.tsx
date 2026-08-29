@@ -1,6 +1,6 @@
 import * as ScreenOrientation from 'expo-screen-orientation';
-import { useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
   Easing,
@@ -64,6 +64,18 @@ export default function CardHomeScreen() {
   // portrait chrome around landscape content. Waiting on the hook's ready
   // flag makes this screen's lock the definitive one.
   const orientationReady = useOrientationLock(ScreenOrientation.OrientationLock.LANDSCAPE);
+
+  // The editor frees rotation while it's open (editing doesn't care which
+  // way up the phone is held), so this screen's own lock needs re-applying
+  // the moment it regains focus -- not just on AppState "active" like the
+  // hook already handles. Re-locking from here, on focus, rather than
+  // having the editor restore LANDSCAPE from its own unmount, avoids the
+  // editor ever issuing its own lockAsync mid-dismiss.
+  useFocusEffect(
+    useCallback(() => {
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+    }, [])
+  );
 
   useEffect(() => {
     if (!playWelcome || !orientationReady) return;

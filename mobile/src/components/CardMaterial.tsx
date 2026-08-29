@@ -103,12 +103,13 @@ function CardMaterialImpl({ templateId, materialId, tilt, opaque, children }: Ca
   // Image under the glare (or over it for matte finishes); a material swap
   // just swaps the source, no per-frame cost.
   const textureLayer = texture ? (
-    <Image
-      source={texture.source}
-      resizeMode="cover"
-      pointerEvents="none"
-      style={[StyleSheet.absoluteFill, { opacity: texture.opacity }]}
-    />
+    <View style={StyleSheet.absoluteFill} pointerEvents="none">
+      <Image
+        source={texture.source}
+        resizeMode="cover"
+        style={[StyleSheet.absoluteFill, { opacity: texture.opacity }]}
+      />
+    </View>
   ) : null;
 
   return (

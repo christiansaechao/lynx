@@ -41,7 +41,13 @@ export default function EditorScreen() {
   const [globalSettingsOpen, setGlobalSettingsOpen] = useState(false);
   const [addLinkOpen, setAddLinkOpen] = useState(false);
 
-  useOrientationLock(ScreenOrientation.OrientationLock.LANDSCAPE);
+  // Editing doesn't care which way up the phone is held, so leave rotation
+  // free here instead of pinning landscape like the card view does. The
+  // card screen re-locks itself to landscape on focus (see card.tsx), so
+  // this screen doesn't need to restore anything on its own way out --
+  // doing that here as well as there was causing a double orientation
+  // flip on dismiss.
+  useOrientationLock(ScreenOrientation.OrientationLock.DEFAULT);
 
   const translateY = useKeyboardOffset(KEYBOARD_SHIFT);
 
@@ -66,7 +72,16 @@ export default function EditorScreen() {
         ]}>
         <View style={styles.header}>
           <Pressable
-            onPress={() => router.back()}
+            onPress={() => {
+              // Settle the landscape lock here, before the screen starts
+              // unmounting, instead of leaving it to card.tsx's focus
+              // effect to race against this screen's still-live DEFAULT
+              // lock during the dismiss animation -- that race was
+              // producing a spurious landscape -> portrait -> landscape
+              // triple-rotation on Done.
+              ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+              router.back();
+            }}
             hitSlop={12}
             style={styles.headerButton}>
             <ThemedText variant="button">Done</ThemedText>
