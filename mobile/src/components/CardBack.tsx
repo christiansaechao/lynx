@@ -100,7 +100,7 @@ export function CardBack({
   return (
     <Pressable style={styles.pressable} onPress={onTap}>
         {/* No tilt: the back is a flat, static sharing hub, not a glare/tilt surface. */}
-        <CardMaterial templateId={card.templateId} materialId={card.materialId} tilt={null}>
+        <CardMaterial templateId={card.templateId} materialId={card.materialId} tilt={null} opaque={forSnapshot}>
           <View style={styles.content} onLayout={onLayout}>
             <View style={[styles.rotated, rotated]}>
               {/* The Master QR — a snapshot of the whole card, not one link.

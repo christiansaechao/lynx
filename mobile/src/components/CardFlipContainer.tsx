@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
-import { useState } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   FadeIn,
@@ -60,8 +60,13 @@ export function CardFlipContainer({
 }: CardFlipContainerProps) {
   const router = useRouter();
   const theme = useTheme();
-  const card = useCardStore((state) => state.card);
-  const textColor = useCardTemplateStyle(card.templateId, card.materialId).textColor;
+  // Narrow subscriptions: this container only needs the two ids that feed
+  // the pencil's tint. Subscribing to the whole `card` re-rendered the
+  // entire flip stage (both faces, both large gradient layers) on every
+  // unrelated edit -- a link toggle, a field keystroke.
+  const templateId = useCardStore((state) => state.card.templateId);
+  const materialId = useCardStore((state) => state.card.materialId);
+  const textColor = useCardTemplateStyle(templateId, materialId).textColor;
   const tilt = useDeviceTilt();
 
   const editable = mode === 'edit';
@@ -129,13 +134,39 @@ export function CardFlipContainer({
     setTappedFace(face);
   };
 
+  // The pencil is a transient affordance: a tap surfaces it, then it fades
+  // back out on its own a few seconds later if nothing was pressed. Any new
+  // tap (or a flip clearing tappedFace) resets the timer via this effect.
+  const PENCIL_TIMEOUT = 3000;
+  const dismissTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    if (dismissTimer.current) clearTimeout(dismissTimer.current);
+    if (tappedFace) {
+      dismissTimer.current = setTimeout(() => setTappedFace(null), PENCIL_TIMEOUT);
+    }
+    return () => {
+      if (dismissTimer.current) clearTimeout(dismissTimer.current);
+    };
+  }, [tappedFace]);
+
+  // A real single tap on the card face. Composed with the flip Pan below so
+  // the two don't deadlock — RNGH lets a Tap and a Pan run on the same view
+  // as long as they're combined explicitly. Relying on a nested <Pressable>
+  // instead loses the race against the Pan gesture and never fires onPress.
+  const tap = Gesture.Tap().onEnd((_e, success) => {
+    if (success) runOnJS(handleTap)();
+  });
+
+  const cardGesture = Gesture.Race(fling, tap);
+
   const showPencil = !editable && tappedFace === face;
 
   return (
-    <GestureDetector gesture={fling}>
-        <Animated.View style={styles.stage}>
+    <View style={styles.stage}>
+    <GestureDetector gesture={cardGesture}>
+        <Animated.View style={StyleSheet.absoluteFill}>
           <Animated.View
-            style={[StyleSheet.absoluteFill, frontStyle, { pointerEvents: face === 'front' ? 'auto' : 'none' }]}>
+            style={[StyleSheet.absoluteFill, frontStyle, { zIndex: 0, pointerEvents: face === 'front' ? 'auto' : 'none' }]}>
             <CardFront
               editable={editable}
               tilt={tilt}
@@ -145,7 +176,7 @@ export function CardFlipContainer({
             />
           </Animated.View>
           <Animated.View
-            style={[StyleSheet.absoluteFill, backStyle, { pointerEvents: face === 'back' ? 'auto' : 'none' }]}>
+            style={[StyleSheet.absoluteFill, backStyle, { zIndex: 0, pointerEvents: face === 'back' ? 'auto' : 'none' }]}>
             <CardBack
               editable={editable}
               onAddLink={onAddLink}
@@ -156,22 +187,27 @@ export function CardFlipContainer({
             />
           </Animated.View>
 
-          {showPencil && (
-            <Animated.View
-              entering={FadeIn.duration(Motion.durations.base)}
-              style={[styles.pencil, { pointerEvents: 'box-none' }]}>
-              <Pressable onPress={() => (onEdit ? onEdit(face) : router.push(`/editor?face=${face}`))}>
-                <SymbolView
-                  name="pencil"
-                  size={20}
-                  weight="medium"
-                  tintColor={textColor ?? theme.text}
-                />
-              </Pressable>
-            </Animated.View>
-          )}
         </Animated.View>
     </GestureDetector>
+
+      {showPencil && (
+        <Animated.View
+          entering={FadeIn.duration(Motion.durations.base)}
+          style={[styles.pencil, { pointerEvents: 'box-none' }]}>
+          <Pressable
+            onPress={() => (onEdit ? onEdit(face) : router.push(`/editor?face=${face}`))}
+            hitSlop={Spacing.md}
+            style={styles.pencilHit}>
+            <SymbolView
+              name="pencil"
+              size={20}
+              weight="medium"
+              tintColor={textColor ?? theme.text}
+            />
+          </Pressable>
+        </Animated.View>
+      )}
+    </View>
   );
 }
 
@@ -182,7 +218,19 @@ const styles = StyleSheet.create({
   },
   pencil: {
     position: 'absolute',
-    bottom: Spacing.md,
-    right: Spacing.md,
+    // The card faces carry 3D rotateY transforms, which on iOS spawn their
+    // own compositing layer that can paint above later siblings in normal
+    // flow. Force the pencil above them explicitly.
+    zIndex: 10,
+    elevation: 10,
+    // Offset by the pencilHit padding below so the 20pt glyph still sits at
+    // Spacing.md from the card's bottom-right edge, unchanged.
+    bottom: Spacing.md - Spacing.sm,
+    right: Spacing.md - Spacing.sm,
+  },
+  // Glyph stays 20pt; the padding + hitSlop widen the touch target to a
+  // comfortable ~44pt without moving the icon.
+  pencilHit: {
+    padding: Spacing.sm,
   },
 });

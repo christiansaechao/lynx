@@ -44,8 +44,9 @@ export default function CardHomeScreen() {
   const playWelcome = welcome === '1';
 
   // Regenerates the Master QR's target image (front + back PNG) whenever
-  // the card is edited; ref goes on the offscreen composite below.
-  const snapshotRef = useCardSnapshot();
+  // the card is edited. The hook mounts the (expensive, 3x-scale) composite
+  // only for the capture window -- see useCardSnapshot.
+  const { snapshotRef, shouldMount: mountSnapshot } = useCardSnapshot();
 
   // The overlay stays mounted until this flips — Reanimated drives every
   // stage of the sequence itself (text in, hold, text out, then overlay
@@ -103,7 +104,7 @@ export default function CardHomeScreen() {
 
       <LinkQRExpanded link={expandedLink} onClose={() => setExpandedLink(null)} />
 
-      <CardSnapshotComposite ref={snapshotRef} />
+      {mountSnapshot && <CardSnapshotComposite ref={snapshotRef} />}
 
       {!overlayDone && (
         <Animated.View pointerEvents="none" style={[styles.welcomeOverlay, overlayStyle]}>

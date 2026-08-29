@@ -4,13 +4,12 @@
     "slug": "lynx",
     "version": "1.0.0",
     "orientation": "default",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/lynx-icon.png",
     "scheme": "lynx",
     "userInterfaceStyle": "automatic",
     "ios": {
       "bundleIdentifier": "com.the-lynx.app",
       "usesAppleSignIn": true,
-      "icon": "./assets/expo.icon",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }

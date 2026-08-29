@@ -58,6 +58,7 @@ export function mapCardRow(row: CardRow, links: LinkRow[]): Card {
     // neither set. See getCardTemplate / useCardTemplateStyle.
     fontId: (row.style as { fontId?: CardFontId } | null)?.fontId,
     fontColorId: (row.style as { fontColorId?: CardFontColorId } | null)?.fontColorId,
+    fontColorHex: (row.style as { fontColorHex?: string } | null)?.fontColorHex,
     fieldStyles: (row.style as { fieldStyles?: Card['fieldStyles'] } | null)?.fieldStyles ?? {},
   };
 }

@@ -10,6 +10,8 @@ import type { EditableFieldKey } from '@/types/card';
 interface CardFrontProps {
   editable: boolean;
   tilt: { beta: SharedValue<number>; gamma: SharedValue<number> };
+  /** Rendered into the offscreen Master QR snapshot -- forces translucent materials opaque. */
+  forSnapshot?: boolean;
   onSelectField?: (key: EditableFieldKey) => void;
   onTap?: () => void;
   /**
@@ -26,10 +28,16 @@ interface CardFrontProps {
   inputAccessoryViewID?: string;
 }
 
-export function CardFront({ editable, tilt, onSelectField, onTap, inputAccessoryViewID }: CardFrontProps) {
+export function CardFront({ editable, tilt, forSnapshot = false, onSelectField, onTap, inputAccessoryViewID }: CardFrontProps) {
   const card = useCardStore((state) => state.card);
   const setField = useCardStore((state) => state.setField);
-  const template = useCardTemplateStyle(card.templateId, card.materialId, card.fontId, card.fontColorId);
+  const template = useCardTemplateStyle(
+    card.templateId,
+    card.materialId,
+    card.fontId,
+    card.fontColorId,
+    card.fontColorHex,
+  );
   const textColor = template.textColor;
   const fontFamily = Fonts?.[template.fontFamily];
   const reliefShadow = template.reliefTextShadow;
@@ -102,7 +110,7 @@ export function CardFront({ editable, tilt, onSelectField, onTap, inputAccessory
 
   return (
     <Pressable style={styles.pressable} onPress={onTap}>
-      <CardMaterial templateId={card.templateId} materialId={card.materialId} tilt={tilt}>
+      <CardMaterial templateId={card.templateId} materialId={card.materialId} tilt={tilt} opaque={forSnapshot}>
         <View style={styles.content}>
           {renderField(
             topKey,

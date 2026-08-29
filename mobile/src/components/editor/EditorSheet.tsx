@@ -15,9 +15,16 @@ interface EditorSheetProps extends PropsWithChildren {
   title: string;
   visible: boolean;
   onClose: () => void;
+  /**
+   * When true the sheet grows to its full `maxHeight` and the content area
+   * fills that space (children can `flex: 1` into it) rather than the
+   * sheet shrinking to fit its content. Use for sheets whose one control
+   * should occupy whatever room is available -- e.g. the colour picker.
+   */
+  fillHeight?: boolean;
 }
 
-export function EditorSheet({ title, visible, onClose, children }: EditorSheetProps) {
+export function EditorSheet({ title, visible, onClose, children, fillHeight = false }: EditorSheetProps) {
   // The sheet outlives `visible` by one animation so SlideOutDown has
   // something to play against.
   const [mounted, setMounted] = useState(visible);
@@ -71,13 +78,18 @@ export function EditorSheet({ title, visible, onClose, children }: EditorSheetPr
           // scrolls inside the ScrollView instead of overflowing.
           style={[
             styles.sheet,
+            fillHeight && styles.sheetFill,
             { paddingBottom: Math.max(insets.bottom, Spacing.lg) },
           ]}>
           <Pressable style={styles.header} onPress={onClose} hitSlop={Spacing.sm}>
             <ThemedText variant="label">{title}</ThemedText>
             <ThemedText variant="button">Done</ThemedText>
           </Pressable>
-          <ScrollView showsVerticalScrollIndicator={false} style={styles.scroll}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            scrollEnabled={!fillHeight}
+            style={[styles.scroll, fillHeight && styles.scrollFill]}
+            contentContainerStyle={fillHeight ? styles.scrollContentFill : undefined}>
             {children}
           </ScrollView>
         </ThemedView>
@@ -113,6 +125,11 @@ const styles = StyleSheet.create({
     // rather than filling the whole area between the notch and the bottom.
     maxHeight: '75%',
   },
+  // fillHeight: pin the sheet AT the cap so the content region below has a
+  // fixed height for its children to flex into.
+  sheetFill: {
+    height: '75%',
+  },
   scroll: {
     // flexGrow: 0 keeps the ScrollView (and its parent sheet) sized to its
     // content up to the sheet's maxHeight, rather than always stretching to
@@ -120,6 +137,14 @@ const styles = StyleSheet.create({
     flexGrow: 0,
     flexShrink: 1,
     marginTop: Spacing.md,
+  },
+  // fillHeight: let the ScrollView take all the room the pinned sheet gives
+  // it, and stretch its content container to match so children can flex.
+  scrollFill: {
+    flexGrow: 1,
+  },
+  scrollContentFill: {
+    flexGrow: 1,
   },
   header: {
     flexDirection: 'row',

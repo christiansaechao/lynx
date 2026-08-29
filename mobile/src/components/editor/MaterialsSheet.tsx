@@ -1,4 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient';
+import { memo, useCallback } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { EditorSheet } from '@/components/editor/EditorSheet';
@@ -30,10 +31,56 @@ const MATERIALS_BY_COLLECTION = COLLECTION_ORDER.map((collection) => ({
   materials: Object.values(CARD_MATERIALS).filter((m) => m.collection === collection),
 }));
 
+// Each swatch mounts its own LinearGradient (a CAGradientLayer on iOS that
+// repaints on any re-render). Memoized on primitives only, so tapping one
+// swatch re-renders exactly two -- the one leaving `selected` and the one
+// entering it -- not all ten.
+interface SwatchProps {
+  material: CardMaterial;
+  selected: boolean;
+  hairline: string;
+  selectedBorder: string;
+  onSelect: (id: CardMaterial['id']) => void;
+}
+
+const MaterialSwatch = memo(function MaterialSwatch({
+  material,
+  selected,
+  hairline,
+  selectedBorder,
+  onSelect,
+}: SwatchProps) {
+  return (
+    <Pressable
+      onPress={() => onSelect(material.id)}
+      style={[
+        styles.swatch,
+        { borderColor: hairline },
+        selected && { borderColor: selectedBorder, borderWidth: 2 },
+      ]}>
+      <LinearGradient
+        colors={material.background.colors}
+        start={material.background.start}
+        end={material.background.end}
+        style={styles.swatchPreview}>
+        <ThemedText numberOfLines={1} style={[styles.swatchName, { color: material.textColor }]}>
+          {material.name}
+        </ThemedText>
+      </LinearGradient>
+    </Pressable>
+  );
+});
+
 export function MaterialsSheet({ visible, onClose }: MaterialsSheetProps) {
   const materialId = useCardStore((state) => state.card.materialId);
   const setMaterial = useCardStore((state) => state.setMaterial);
   const theme = useTheme();
+
+  // Stable identity so MaterialSwatch's memo holds across selections.
+  const handleSelect = useCallback(
+    (id: CardMaterial['id']) => setMaterial(id),
+    [setMaterial],
+  );
 
   return (
     <EditorSheet title="Material" visible={visible} onClose={onClose}>
@@ -52,31 +99,16 @@ export function MaterialsSheet({ visible, onClose }: MaterialsSheetProps) {
               </ThemedText>
             </View>
             <View style={styles.grid}>
-              {materials.map((material) => {
-                const selected = materialId === material.id;
-                return (
-                  <Pressable
-                    key={material.id}
-                    onPress={() => setMaterial(material.id)}
-                    style={[
-                      styles.swatch,
-                      { borderColor: theme.hairline },
-                      selected && { borderColor: theme.text, borderWidth: 2 },
-                    ]}>
-                    <LinearGradient
-                      colors={material.background.colors}
-                      start={material.background.start}
-                      end={material.background.end}
-                      style={styles.swatchPreview}>
-                      <ThemedText
-                        numberOfLines={1}
-                        style={[styles.swatchName, { color: material.textColor }]}>
-                        {material.name}
-                      </ThemedText>
-                    </LinearGradient>
-                  </Pressable>
-                );
-              })}
+              {materials.map((material) => (
+                <MaterialSwatch
+                  key={material.id}
+                  material={material}
+                  selected={materialId === material.id}
+                  hairline={theme.hairline}
+                  selectedBorder={theme.text}
+                  onSelect={handleSelect}
+                />
+              ))}
             </View>
           </View>
         );

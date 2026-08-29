@@ -2,6 +2,7 @@ import { create } from 'zustand';
 
 import { DEFAULT_TEMPLATE_ID } from '@/constants/cardTemplates';
 import { saveCardCache } from '@/utils/cardCache';
+import { scheduleCardSync } from '@/utils/cardSync';
 import { localId } from '@/utils/localId';
 import {
   syncAddLink,
@@ -64,8 +65,10 @@ interface CardStore {
   setTemplate: (templateId: CardTemplateId) => void;
   /** Pass undefined to fall back to the template's own font. */
   setFont: (fontId: CardFontId | undefined) => void;
-  /** Pass undefined to fall back to the template's own text/label colors. */
+  /** Pass undefined to fall back to the template's own text/label colors. Clears any custom hex. */
   setFontColor: (fontColorId: CardFontColorId | undefined) => void;
+  /** A custom `#rrggbb` ink. Pass undefined to clear it. Clears any preset fontColorId. */
+  setFontColorHex: (hex: string | undefined) => void;
   addLink: (link: Omit<Link, 'id'>) => void;
   updateLink: (id: string, updates: Partial<Omit<Link, 'id'>>) => void;
   removeLink: (id: string) => void;
@@ -110,6 +113,23 @@ export const useCardStore = create<CardStore>((set, get) => {
     void saveCardCache(userId, { cardId, card, dirty: !synced, snapshotUrl });
   };
 
+  /**
+   * After a front-of-card edit (fields, styles, material, template, font):
+   * mirror to the local cache immediately, and debounce a write of the
+   * whole `cards` row to the backend. No identity yet = seeded mockup,
+   * nothing to persist. Without a cardId we can still cache locally.
+   */
+  const persistCard = () => {
+    const { cardId, userId } = get();
+    if (!userId) return;
+    if (cardId) {
+      persist(true); // optimistic; scheduleCardSync's result re-marks on failure
+      scheduleCardSync(cardId, () => get().card, persist);
+    } else {
+      persist(false);
+    }
+  };
+
   return {
     card: defaultCard,
     cardId: null,
@@ -122,15 +142,17 @@ export const useCardStore = create<CardStore>((set, get) => {
 
     setCard: (card) => set({ card }),
 
-    setField: (key, value) =>
+    setField: (key, value) => {
       set((state) => ({
         card: {
           ...state.card,
           fields: { ...state.card.fields, [key]: value } as typeof state.card.fields,
         },
-      })),
+      }));
+      persistCard();
+    },
 
-    setFieldStyle: (key, updates) =>
+    setFieldStyle: (key, updates) => {
       set((state) => ({
         card: {
           ...state.card,
@@ -139,19 +161,34 @@ export const useCardStore = create<CardStore>((set, get) => {
             [key]: { ...state.card.fieldStyles[key], ...updates },
           },
         },
-      })),
+      }));
+      persistCard();
+    },
 
-    setMaterial: (materialId) =>
-      set((state) => ({ card: { ...state.card, materialId } })),
+    setMaterial: (materialId) => {
+      set((state) => ({ card: { ...state.card, materialId } }));
+      persistCard();
+    },
 
-    setTemplate: (templateId) =>
-      set((state) => ({ card: { ...state.card, templateId } })),
+    setTemplate: (templateId) => {
+      set((state) => ({ card: { ...state.card, templateId } }));
+      persistCard();
+    },
 
-    setFont: (fontId) =>
-      set((state) => ({ card: { ...state.card, fontId } })),
+    setFont: (fontId) => {
+      set((state) => ({ card: { ...state.card, fontId } }));
+      persistCard();
+    },
 
-    setFontColor: (fontColorId) =>
-      set((state) => ({ card: { ...state.card, fontColorId } })),
+    setFontColor: (fontColorId) => {
+      set((state) => ({ card: { ...state.card, fontColorId, fontColorHex: undefined } }));
+      persistCard();
+    },
+
+    setFontColorHex: (hex) => {
+      set((state) => ({ card: { ...state.card, fontColorHex: hex, fontColorId: undefined } }));
+      persistCard();
+    },
 
     addLink: (link) => {
       const created: Link = { ...link, id: localId() };

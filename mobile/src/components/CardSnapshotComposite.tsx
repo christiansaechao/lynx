@@ -13,10 +13,12 @@ import { Card } from '@/constants/theme';
  * PNG's source: it renders both faces at a fixed size for
  * react-native-view-shot's captureRef.
  *
- * Mounted offscreen (see styles.host) rather than conditionally, so the
- * ref is always capturable without a layout pass flashing on screen. It is
- * NOT interactive -- editable={false}, and the tilt inputs are pinned to
- * zero so the capture is a flat, glare-free reference image.
+ * Mounted offscreen (see styles.host). It is mounted only transiently, for
+ * the capture window itself -- useCardSnapshot flips it in after the edit
+ * debounce, waits for layout, captures, then unmounts it -- because at 3x
+ * scale re-rendering it on every edit stalled the visible card. It is NOT
+ * interactive -- editable={false}, and the tilt inputs are pinned to zero
+ * so the capture is a flat, glare-free reference image.
  */
 
 const CAPTURE_WIDTH = 1050; // 3x a 350pt card face -- crisp when zoomed on a phone
@@ -33,7 +35,7 @@ export const CardSnapshotComposite = forwardRef<View>((_props, ref) => {
     <View style={styles.host} pointerEvents="none" collapsable={false}>
       <View ref={ref} collapsable={false} style={styles.sheet}>
         <View style={[styles.face, { width: CAPTURE_WIDTH, height: FACE_HEIGHT }]}>
-          <CardFront editable={false} tilt={tilt} />
+          <CardFront editable={false} tilt={tilt} forSnapshot />
         </View>
         <View style={[styles.face, { width: CAPTURE_WIDTH, height: FACE_HEIGHT }]}>
           <CardBack editable={false} forSnapshot />

@@ -46,9 +46,10 @@ export default function EditorScreen() {
   const translateY = useKeyboardOffset(KEYBOARD_SHIFT);
 
   // Re-render the Master QR's target image (front + back PNG) as the card is
-  // edited here. Debounced inside the hook; ref goes on the offscreen
-  // composite at the end of the tree.
-  const snapshotRef = useCardSnapshot();
+  // edited here. Debounced inside the hook, which also decides *when* the
+  // (expensive, 3x-scale) composite is mounted -- only for the capture
+  // window, never during an edit -- so a swatch tap isn't stalled by it.
+  const { snapshotRef, shouldMount: mountSnapshot } = useCardSnapshot();
 
   return (
     <View style={styles.flex}>
@@ -64,10 +65,16 @@ export default function EditorScreen() {
           },
         ]}>
         <View style={styles.header}>
-          <Pressable onPress={() => router.back()}>
+          <Pressable
+            onPress={() => router.back()}
+            hitSlop={12}
+            style={styles.headerButton}>
             <ThemedText variant="button">Done</ThemedText>
           </Pressable>
-          <Pressable onPress={() => setGlobalSettingsOpen(true)}>
+          <Pressable
+            onPress={() => setGlobalSettingsOpen(true)}
+            hitSlop={16}
+            style={styles.headerButton}>
             <SymbolView name="gearshape" size={20} tintColor={theme.text} />
           </Pressable>
         </View>
@@ -92,7 +99,7 @@ export default function EditorScreen() {
         />
       </Animated.View>
 
-      <CardSnapshotComposite ref={snapshotRef} />
+      {mountSnapshot && <CardSnapshotComposite ref={snapshotRef} />}
     </View>
   );
 }
@@ -109,6 +116,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: Spacing.md,
+  },
+  // Padding widens the visible press area; the Pressables also carry
+  // hitSlop for the gap between the small icon/label and this box. The
+  // negative margin keeps the row's visual alignment unchanged.
+  headerButton: {
+    padding: Spacing.sm,
+    margin: -Spacing.sm,
   },
   cardWrap: {
     flex: 1,

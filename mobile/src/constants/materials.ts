@@ -41,8 +41,33 @@ export interface CardMaterial {
     /** Additional opacity at full tilt. Metals and gloss peak higher. */
     tiltOpacity: number;
   };
-  /** Translucent finishes blur whatever sits behind the card. */
-  translucent?: boolean;
+  /**
+   * Translucent finishes let the backdrop bleed faintly through the card.
+   * `alpha` is the base gradient layer's opacity (glare and ink stay fully
+   * opaque, on their own layers). The snapshot composite forces this to 1
+   * so the Master QR image isn't rendered see-through onto its black sheet.
+   */
+  translucent?: { alpha: number };
+  /**
+   * A greyscale image laid over the base gradient to give the surface a
+   * grain -- carbon weave, brushed-metal striations, cardstock fibre.
+   * Optional: most finishes are pure gradient. Rendered stretched-to-cover
+   * the face (not tiled -- tile seams showed even on a seamless source, and
+   * the grain barely reads at card scale anyway). Should be near-neutral;
+   * `opacity` keeps it a whisper, not a printed graphic.
+   */
+  texture?: {
+    /** require('@/assets/textures/<file>.png') -- a static asset module. */
+    source: number;
+    /** 0..1. Typically 0.05-0.15; the grain should whisper, not shout. */
+    opacity: number;
+    /**
+     * When true the texture sits *above* the glare, so the highlight
+     * doesn't rake across it -- right for matte paper. Default (false) puts
+     * it under the glare, so a metal/carbon weave catches the moving sheen.
+     */
+    overGlare?: boolean;
+  };
 }
 
 const DIAGONAL = { start: { x: 0, y: 0 }, end: { x: 1, y: 1 } } as const;
@@ -58,6 +83,11 @@ export const CARD_MATERIALS: Record<CardMaterialId, CardMaterial> = {
     labelColor: '#4a463c',
     relief: 'embossed',
     glare: { color: '#ffffff', restOpacity: 0.1, tiltOpacity: 0.25 },
+    texture: {
+      source: require('@/assets/textures/cardstock_texture.png'),
+      opacity: 0.06,
+      overGlare: true,
+    },
   },
   silianRail: {
     id: 'silianRail',
@@ -69,6 +99,11 @@ export const CARD_MATERIALS: Record<CardMaterialId, CardMaterial> = {
     labelColor: '#4a4a4a',
     relief: 'embossed',
     glare: { color: '#ffffff', restOpacity: 0.08, tiltOpacity: 0.2 },
+    texture: {
+      source: require('@/assets/textures/cotton_paper_texture.png'),
+      opacity: 0.05,
+      overGlare: true,
+    },
   },
   // The remaining eight, per MATERIALS_CATALOG.md. Pricing gating isn't
   // enforced anywhere yet -- `tier` just makes the data ready for that pass.
@@ -84,6 +119,11 @@ export const CARD_MATERIALS: Record<CardMaterialId, CardMaterial> = {
     // MATERIALS_CATALOG.md's Obsidian Matte entry.
     relief: 'debossed',
     glare: { color: '#8a8a95', restOpacity: 0.04, tiltOpacity: 0.35 },
+    texture: {
+      source: require('@/assets/textures/matte_plastic_texture.png'),
+      opacity: 0.025,
+      overGlare: true,
+    },
   },
   brushedGunmetal: {
     id: 'brushedGunmetal',
@@ -95,6 +135,10 @@ export const CARD_MATERIALS: Record<CardMaterialId, CardMaterial> = {
     labelColor: '#c4c6ca',
     relief: 'flat',
     glare: { color: '#e8eaee', restOpacity: 0.12, tiltOpacity: 0.4 },
+    texture: {
+      source: require('@/assets/textures/brushed_metal_texture.png'),
+      opacity: 0.03,
+    },
   },
   anodizedTitanium: {
     id: 'anodizedTitanium',
@@ -106,6 +150,10 @@ export const CARD_MATERIALS: Record<CardMaterialId, CardMaterial> = {
     labelColor: '#2c2d2f',
     relief: 'flat',
     glare: { color: '#ffffff', restOpacity: 0.1, tiltOpacity: 0.3 },
+    texture: {
+      source: require('@/assets/textures/titanium_texture.png'),
+      opacity: 0.08,
+    },
   },
   frostedGlass: {
     id: 'frostedGlass',
@@ -117,7 +165,11 @@ export const CARD_MATERIALS: Record<CardMaterialId, CardMaterial> = {
     labelColor: '#4a5a68',
     relief: 'flat',
     glare: { color: '#ffffff', restOpacity: 0.2, tiltOpacity: 0.3 },
-    translucent: true,
+    translucent: { alpha: 0.92 },
+    texture: {
+      source: require('@/assets/textures/frosted_glass_texture.png'),
+      opacity: 0.04,
+    },
   },
   holographicPrism: {
     id: 'holographicPrism',
@@ -143,6 +195,10 @@ export const CARD_MATERIALS: Record<CardMaterialId, CardMaterial> = {
     labelColor: '#9a9a9e',
     relief: 'flat',
     glare: { color: '#5a6a7a', restOpacity: 0.1, tiltOpacity: 0.35 },
+    texture: {
+      source: require('@/assets/textures/carbon_fiber_texture.png'),
+      opacity: 0.01,
+    },
   },
   rawConcrete: {
     id: 'rawConcrete',
@@ -154,6 +210,11 @@ export const CARD_MATERIALS: Record<CardMaterialId, CardMaterial> = {
     labelColor: '#5c5a56',
     relief: 'flat',
     glare: { color: '#ffffff', restOpacity: 0.05, tiltOpacity: 0.12 },
+    texture: {
+      source: require('@/assets/textures/raw_concrete_texture.png'),
+      opacity: 0.09,
+      overGlare: true,
+    },
   },
   roseGoldFoil: {
     id: 'roseGoldFoil',

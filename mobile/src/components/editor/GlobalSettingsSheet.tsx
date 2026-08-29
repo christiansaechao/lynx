@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { EditorSheet } from '@/components/editor/EditorSheet';
+import { FontColorPickerSheet } from '@/components/editor/FontColorPickerSheet';
+import { FontSheet } from '@/components/editor/FontSheet';
 import { MaterialsSheet } from '@/components/editor/MaterialsSheet';
 import { ThemedText } from '@/components/themed-text';
 import { CARD_TEMPLATES } from '@/constants/cardTemplates';
 import { FONT_COLOR_LIST } from '@/constants/fontColors';
-import { FONT_LIST } from '@/constants/fonts';
+import { getCardFont } from '@/constants/fonts';
 import { getCardMaterial } from '@/constants/materials';
 import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
@@ -28,14 +30,16 @@ export function GlobalSettingsSheet({ visible, onClose }: GlobalSettingsSheetPro
   const templateId = useCardStore((state) => state.card.templateId);
   const setTemplate = useCardStore((state) => state.setTemplate);
   const fontId = useCardStore((state) => state.card.fontId);
-  const setFont = useCardStore((state) => state.setFont);
   const fontColorId = useCardStore((state) => state.card.fontColorId);
+  const fontColorHex = useCardStore((state) => state.card.fontColorHex);
   const setFontColor = useCardStore((state) => state.setFontColor);
   const theme = useTheme();
 
-  // Materials get their own sheet -- they're the cosmetic economy, not just
-  // another chip row -- so this sheet only holds a row that opens it.
+  // Material and Font each get their own nested sheet -- this sheet only
+  // holds the row that opens each, so they can sit side by side.
   const [materialsOpen, setMaterialsOpen] = useState(false);
+  const [fontOpen, setFontOpen] = useState(false);
+  const [colorPickerOpen, setColorPickerOpen] = useState(false);
   const currentMaterial = getCardMaterial(materialId);
 
   return (
@@ -59,75 +63,96 @@ export function GlobalSettingsSheet({ visible, onClose }: GlobalSettingsSheetPro
         ))}
       </View>
 
-      <ThemedText type="small" themeColor="textSecondary" style={styles.sectionLabel}>
-        Material
-      </ThemedText>
-      <Pressable
-        style={[styles.linkRow, { borderColor: theme.hairline }]}
-        onPress={() => setMaterialsOpen(true)}>
-        <ThemedText type="small">{currentMaterial.name}</ThemedText>
-        <ThemedText type="small" themeColor="textSecondary">
-          {currentMaterial.collection} ›
-        </ThemedText>
-      </Pressable>
-
-      <ThemedText type="small" themeColor="textSecondary" style={styles.sectionLabel}>
-        Font
-      </ThemedText>
-      <View style={styles.row}>
-        {/* No selection (fontId undefined) means "use the template's own font" -- offered as its own chip rather than defaulting one of the four to always look selected. */}
-        <Pressable
-          style={[styles.swatch, { borderColor: theme.hairline }, !fontId && { borderColor: theme.text, borderWidth: 2 }]}
-          onPress={() => setFont(undefined)}>
-          <ThemedText type="small">Default</ThemedText>
-        </Pressable>
-        {FONT_LIST.map((font) => (
+      <View style={styles.pairRow}>
+        <View style={styles.pairCol}>
+          <ThemedText type="small" themeColor="textSecondary" style={styles.sectionLabel}>
+            Material
+          </ThemedText>
           <Pressable
-            key={font.id}
-            style={[
-              styles.swatch,
-              { borderColor: theme.hairline },
-              fontId === font.id && { borderColor: theme.text, borderWidth: 2 },
-            ]}
-            onPress={() => setFont(font.id)}>
-            <ThemedText type="small">{font.name}</ThemedText>
+            style={[styles.dropdown, { borderColor: theme.hairline }]}
+            onPress={() => setMaterialsOpen(true)}>
+            <ThemedText type="small" numberOfLines={1}>
+              {currentMaterial.name}
+            </ThemedText>
+            <ThemedText type="small" themeColor="textSecondary">
+              ›
+            </ThemedText>
           </Pressable>
-        ))}
+        </View>
+
+        <View style={styles.pairCol}>
+          <ThemedText type="small" themeColor="textSecondary" style={styles.sectionLabel}>
+            Font
+          </ThemedText>
+          <Pressable
+            style={[styles.dropdown, { borderColor: theme.hairline }]}
+            onPress={() => setFontOpen(true)}>
+            <ThemedText type="small" numberOfLines={1}>
+              {fontId ? getCardFont(fontId).name : 'Default'}
+            </ThemedText>
+            <ThemedText type="small" themeColor="textSecondary">
+              ›
+            </ThemedText>
+          </Pressable>
+        </View>
       </View>
 
       <ThemedText type="small" themeColor="textSecondary" style={styles.sectionLabel}>
         Font Color
       </ThemedText>
       <View style={styles.row}>
+        {/* Default has no colour to fill -- a hairline chip with a slash. */}
         <Pressable
           style={[
-            styles.swatch,
+            styles.colorChip,
+            styles.defaultChip,
             { borderColor: theme.hairline },
             !fontColorId && { borderColor: theme.text, borderWidth: 2 },
           ]}
           onPress={() => setFontColor(undefined)}>
-          <ThemedText type="small">Default</ThemedText>
+          <View style={[styles.defaultSlash, { backgroundColor: theme.hairline }]} />
         </Pressable>
         {FONT_COLOR_LIST.map((color) => (
           <Pressable
             key={color.id}
             style={[
-              styles.swatch,
-              styles.colorSwatch,
-              { borderColor: theme.hairline },
+              styles.colorChip,
+              { backgroundColor: color.textColor, borderColor: theme.hairline },
               fontColorId === color.id && { borderColor: theme.text, borderWidth: 2 },
             ]}
-            onPress={() => setFontColor(color.id)}>
-            <View style={[styles.colorDot, { backgroundColor: color.textColor }]} />
-            <ThemedText type="small">{color.name}</ThemedText>
-          </Pressable>
+            onPress={() => setFontColor(color.id)}
+            accessibilityLabel={color.name}
+          />
         ))}
+        {/* Custom hex -- shows the chosen colour when set, a '+' otherwise. */}
+        <Pressable
+          style={[
+            styles.colorChip,
+            styles.defaultChip,
+            { borderColor: theme.hairline },
+            fontColorHex
+              ? { backgroundColor: fontColorHex }
+              : null,
+            fontColorHex && { borderColor: theme.text, borderWidth: 2 },
+          ]}
+          onPress={() => setColorPickerOpen(true)}
+          accessibilityLabel="Custom color">
+          {!fontColorHex && (
+            <ThemedText type="small" themeColor="textSecondary">
+              +
+            </ThemedText>
+          )}
+        </Pressable>
       </View>
     </EditorSheet>
     <MaterialsSheet visible={materialsOpen} onClose={() => setMaterialsOpen(false)} />
+    <FontSheet visible={fontOpen} onClose={() => setFontOpen(false)} />
+    <FontColorPickerSheet visible={colorPickerOpen} onClose={() => setColorPickerOpen(false)} />
     </>
   );
 }
+
+const CHIP_SIZE = 40;
 
 const styles = StyleSheet.create({
   sectionLabel: {
@@ -147,7 +172,15 @@ const styles = StyleSheet.create({
     borderRadius: Spacing.sm,
     borderWidth: 1,
   },
-  linkRow: {
+  pairRow: {
+    flexDirection: 'row',
+    gap: Spacing.md,
+    marginBottom: Spacing.md,
+  },
+  pairCol: {
+    flex: 1,
+  },
+  dropdown: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -155,16 +188,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.md,
     borderRadius: Spacing.sm,
     borderWidth: 1,
-    marginBottom: Spacing.md,
   },
-  colorSwatch: {
-    flexDirection: 'row',
+  colorChip: {
+    width: CHIP_SIZE,
+    height: CHIP_SIZE,
+    borderRadius: Spacing.sm,
+    borderWidth: 1,
+  },
+  defaultChip: {
     alignItems: 'center',
-    gap: Spacing.xs,
+    justifyContent: 'center',
   },
-  colorDot: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
+  defaultSlash: {
+    width: CHIP_SIZE - 12,
+    height: 2,
+    transform: [{ rotate: '-45deg' }],
   },
 });

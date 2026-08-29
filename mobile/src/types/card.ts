@@ -93,6 +93,13 @@ export interface Card {
   fontId?: CardFontId;
   /** Overrides the template's default textColor/labelColor when set. */
   fontColorId?: CardFontColorId;
+  /**
+   * A custom `#rrggbb` ink chosen from the colour picker. Mutually
+   * exclusive with `fontColorId` -- setting one clears the other. When set
+   * it wins over both the preset and the material's own ink; the label
+   * colour is derived from it (see utils/color.ts).
+   */
+  fontColorHex?: string;
   /** Per-field style overrides, keyed by EditableFieldKey. Absent = template defaults, no overrides. */
   fieldStyles: Partial<Record<EditableFieldKey, FieldStyle>>;
 }

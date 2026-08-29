@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useCardStore } from '@/store/useCardStore';
 import { loadCardCache, saveCardCache } from '@/utils/cardCache';
+import { syncCard } from '@/utils/cardSync';
 import { syncReplaceAllLinks } from '@/utils/linksSync';
 import { cardStamp } from '@/utils/cardSnapshot';
 import { mapCardRow } from '@/utils/mapCardRow';
@@ -121,9 +122,14 @@ export function AuthProvider() {
         const cached = await loadCardCache(userId);
         if (!active) return;
         if (cached?.dirty && cached.cardId === row.id) {
-          const result = await syncReplaceAllLinks(row.id, cached.card.links);
+          // Re-push both halves of the offline state: the card row (fields,
+          // material, style) and the full link set.
+          const [cardResult, linksResult] = await Promise.all([
+            syncCard(row.id, cached.card),
+            syncReplaceAllLinks(row.id, cached.card.links),
+          ]);
           if (!active) return;
-          if (result.ok) {
+          if (cardResult.ok && linksResult.ok) {
             setCard(cached.card);
             await saveCardCache(userId, {
               cardId: row.id,
