@@ -1,12 +1,13 @@
+import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
 import { LayoutChangeEvent, Pressable, StyleSheet, View } from 'react-native';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import QRCode from 'react-native-qrcode-svg';
 
 import { CardMaterial, useCardTemplateStyle } from '@/components/CardMaterial';
 import { LinkGlyph } from '@/components/LinkGlyph';
 import { ThemedText } from '@/components/themed-text';
-import { Card, Spacing } from '@/constants/theme';
-import { useDeviceOrientation } from '@/hooks/use-device-orientation';
+import { Card, Motion, Spacing } from '@/constants/theme';
 import { useCardStore } from '@/store/useCardStore';
 import type { Link } from '@/types/card';
 
@@ -27,6 +28,16 @@ interface CardBackProps {
    * outside this face's 3D/backface-hidden transform — see CardFlipContainer.
    */
   onExpandLink?: (link: Link) => void;
+  onOpenRolodex?: () => void;
+  onScan?: () => void;
+  onEdit?: () => void;
+  /**
+   * Mirrors the front pencil's transient-affordance behavior: a tap on the
+   * face surfaces the icon row, which then fades back out on its own a few
+   * seconds later. Owned by CardFlipContainer, same as tappedFace/showPencil
+   * on the front -- see its dismiss timer.
+   */
+  showIcons?: boolean;
 }
 
 /**
@@ -44,6 +55,10 @@ export function CardBack({
   onSelectLink,
   onTap,
   onExpandLink,
+  onOpenRolodex,
+  onScan,
+  onEdit,
+  showIcons = false,
   forSnapshot = false,
 }: CardBackProps) {
   const card = useCardStore((state) => state.card);
@@ -66,7 +81,23 @@ export function CardBack({
   // face just needs its quarter-turn in place to read upright; held in
   // portrait the screen itself is already the right way round, so the
   // rotation would turn it sideways instead of fixing it.
-  const { isLandscape } = useDeviceOrientation();
+  //
+  // isLandscape is derived from the measured frame itself rather than a
+  // separately-polled OS orientation value. This screen never unmounts
+  // when a modal (rolodex, scan) is pushed above it -- it only loses
+  // focus -- so an independent poll and this onLayout-driven frame were
+  // two state sources that updated on different schedules and could
+  // transiently disagree (isLandscape flips true while frame still holds
+  // the stale portrait size from before the modal), which sized the
+  // rotated box off the wrong dimensions and blew the Master QR up to
+  // cover the whole card. Deriving isLandscape from frame instead makes
+  // the two impossible to desync -- there's only one state variable.
+  const [frame, setFrame] = useState({ width: 0, height: 0 });
+  const onLayout = (event: LayoutChangeEvent) => {
+    const { width, height } = event.nativeEvent.layout;
+    setFrame((prev) => (prev.width === width && prev.height === height ? prev : { width, height }));
+  };
+  const isLandscape = frame.width > frame.height;
 
   // transform: rotate spins a view around its center without reflowing
   // layout, so in landscape the wrapper has to be sized with width/height
@@ -74,12 +105,6 @@ export function CardBack({
   // the box it lives in still has landscape proportions. In portrait no
   // rotation is applied, so the box keeps its natural (already-portrait)
   // dimensions.
-  const [frame, setFrame] = useState({ width: 0, height: 0 });
-  const onLayout = (event: LayoutChangeEvent) => {
-    const { width, height } = event.nativeEvent.layout;
-    setFrame((prev) => (prev.width === width && prev.height === height ? prev : { width, height }));
-  };
-
   const rotated = isLandscape
     ? { width: frame.height, height: frame.width, transform: [{ rotate: '-90deg' as const }] }
     : { width: frame.width, height: frame.height, transform: [] };
@@ -204,6 +229,51 @@ export function CardBack({
                 </ThemedText>
               )}
             </View>
+
+            {/* Outside .rotated deliberately -- .rotated carries a -90deg
+                transform, and an absolutely-positioned child of a
+                transformed parent is placed relative to the parent's
+                untransformed box, then rotated along with it. Living in
+                .content instead keeps this pinned to the screen's actual
+                top-right regardless of device orientation. */}
+            {(onEdit || onScan || onOpenRolodex) && showIcons && (
+              <Animated.View
+                entering={FadeIn.duration(Motion.durations.base)}
+                exiting={FadeOut.duration(Motion.durations.base)}
+                style={styles.iconRow}
+                pointerEvents="box-none">
+                {onEdit && (
+                  <Pressable onPress={onEdit} hitSlop={Spacing.lg} style={styles.iconHit}>
+                    <SymbolView
+                      name="pencil"
+                      size={24}
+                      tintColor={textColor}
+                      style={isLandscape ? styles.iconGlyphRotated : undefined}
+                    />
+                  </Pressable>
+                )}
+                {onScan && (
+                  <Pressable onPress={onScan} hitSlop={Spacing.lg} style={styles.iconHit}>
+                    <SymbolView
+                      name="camera"
+                      size={24}
+                      tintColor={textColor}
+                      style={isLandscape ? styles.iconGlyphRotated : undefined}
+                    />
+                  </Pressable>
+                )}
+                {onOpenRolodex && (
+                  <Pressable onPress={onOpenRolodex} hitSlop={Spacing.lg} style={styles.iconHit}>
+                    <SymbolView
+                      name="gearshape"
+                      size={24}
+                      tintColor={textColor}
+                      style={isLandscape ? styles.iconGlyphRotated : undefined}
+                    />
+                  </Pressable>
+                )}
+              </Animated.View>
+            )}
           </View>
         </CardMaterial>
     </Pressable>
@@ -284,5 +354,28 @@ const styles = StyleSheet.create({
   addPlus: {
     fontSize: 16,
     lineHeight: 18,
+  },
+  // Top-right of the screen, always -- same corner/inset the original cog
+  // used, unchanged. Not inside .rotated (see the comment above).
+  iconRow: {
+    position: 'absolute',
+    top: Spacing.sm,
+    right: Spacing.sm,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.md,
+  },
+  iconHit: {
+    opacity: 0.6,
+    padding: Spacing.sm,
+    borderWidth: 1,
+    borderRadius: Spacing.sm,
+    borderColor: '#5B8DEF',
+  },
+  // The icons live outside .rotated (see the comment above), so each glyph
+  // gets the same -90deg turn individually to read upright in sync with the
+  // rest of the back content when the phone is held to view it that way.
+  iconGlyphRotated: {
+    transform: [{ rotate: '-90deg' }],
   },
 });

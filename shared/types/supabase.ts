@@ -93,6 +93,7 @@ export type Database = {
           note: string | null
           owner_user_id: string
           sorted_at: string | null
+          source: string
           source_card_id: string | null
           starred: boolean
         }
@@ -103,6 +104,7 @@ export type Database = {
           note?: string | null
           owner_user_id: string
           sorted_at?: string | null
+          source?: string
           source_card_id?: string | null
           starred?: boolean
         }
@@ -113,6 +115,7 @@ export type Database = {
           note?: string | null
           owner_user_id?: string
           sorted_at?: string | null
+          source?: string
           source_card_id?: string | null
           starred?: boolean
         }

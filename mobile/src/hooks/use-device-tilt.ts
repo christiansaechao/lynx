@@ -78,7 +78,19 @@ export function useDeviceTilt() {
       startTracking();
     });
     const orientationSubscription = ScreenOrientation.addOrientationChangeListener((event) => {
-      orientation = event.orientationInfo.orientation;
+      const next = event.orientationInfo.orientation;
+      // This screen is locked to landscape -- a transient PORTRAIT_UP/DOWN
+      // report (e.g. iOS's own orientation blip while a camera session
+      // above this screen tears down) isn't a real rotation to remap
+      // against, and applying it snaps the tilt mapping to the wrong
+      // axis/sign for a frame before the real LANDSCAPE event corrects it.
+      if (
+        next !== ScreenOrientation.Orientation.LANDSCAPE_LEFT &&
+        next !== ScreenOrientation.Orientation.LANDSCAPE_RIGHT
+      ) {
+        return;
+      }
+      orientation = next;
     });
 
     return () => {

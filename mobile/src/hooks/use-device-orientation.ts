@@ -8,6 +8,13 @@ import { useEffect, useState } from 'react';
  * that determines whether a fixed-landscape layout needs its quarter-turn
  * rotation or not. Resolves the current orientation once up front, then
  * stays live via the same listener pattern as use-device-tilt.ts.
+ *
+ * Unused by CardBack -- it derives isLandscape from its own measured
+ * onLayout frame instead, since this hook's OS-level orientation state and
+ * that layout state update on different schedules and could disagree
+ * while CardBack sits (still mounted) under another screen. Kept here for
+ * anything that genuinely needs live OS orientation rather than a
+ * particular view's own measured shape.
  */
 export function useDeviceOrientation() {
   const [orientation, setOrientation] = useState<ScreenOrientation.Orientation | null>(null);

@@ -18,11 +18,3 @@ export const EDITOR_LAYOUTS: Record<string, ComponentType<EditorLayoutProps>> = 
 export function getActiveEditorLayout(): ComponentType<EditorLayoutProps> {
   return EDITOR_LAYOUTS[ACTIVE_EDITOR_LAYOUT];
 }
-
-/**
- * iOS InputAccessoryView id linking CardFront's TextInputs to whichever
- * layout version renders an accessory bar. Defined here (not per-layout)
- * because editor.tsx has to pass it to CardFlipContainer without knowing
- * which layout is active.
- */
-export const EDITOR_ACCESSORY_VIEW_ID = 'lynx-editor-accessory-bar';

@@ -30,30 +30,43 @@ import { AppState } from 'react-native';
  * card.tsx's useFocusEffect) rather than relying on the screen above it to
  * restore things on the way out, which produces a double orientation
  * transition during the dismiss animation.
+ *
+ * `enabled` (default true) lets a caller suppress the AppState "active"
+ * relock without unmounting the hook. scan.tsx needs this: closing the
+ * camera (CameraView unmount, permission/session teardown) can itself
+ * trigger a spurious AppState "active" blip on iOS, and if that lands
+ * after the screen below (card.tsx) has already re-locked LANDSCAPE on
+ * focus, this hook's own listener would relock PORTRAIT_UP right back on
+ * top of it -- a third, out-of-order lock call fighting the other two.
  */
-export function useOrientationLock(lock: ScreenOrientation.OrientationLock) {
+export function useOrientationLock(lock: ScreenOrientation.OrientationLock, enabled: boolean = true) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    if (!enabled) return;
+
     let cancelled = false;
 
-    const apply = () => {
+    const apply = (reason: string) => {
+      console.log(`[orientation] lockAsync(${lock}) requested -- ${reason}`);
       ScreenOrientation.lockAsync(lock).then(() => {
+        console.log(`[orientation] lockAsync(${lock}) settled -- ${reason}`);
         if (!cancelled) setReady(true);
       });
     };
 
-    apply();
+    apply('mount/lock-change');
 
     const subscription = AppState.addEventListener('change', (state) => {
-      if (state === 'active') apply();
+      console.log(`[orientation] AppState changed to ${state} (enabled=${enabled})`);
+      if (state === 'active') apply('AppState active');
     });
 
     return () => {
       cancelled = true;
       subscription.remove();
     };
-  }, [lock]);
+  }, [lock, enabled]);
 
   return ready;
 }

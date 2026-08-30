@@ -45,6 +45,10 @@ interface CardFlipContainerProps {
    * here inside the padded card stage.
    */
   onExpandLink?: (link: Link) => void;
+  /** Forwarded to CardBack — see its prop doc. Omitted in edit mode; the cog is a viewing-only affordance. */
+  onOpenRolodex?: () => void;
+  /** Forwarded to CardBack — see its prop doc. Omitted in edit mode. */
+  onScan?: () => void;
   /** Forwarded to CardFront — see its prop doc. */
   inputAccessoryViewID?: string;
 }
@@ -56,6 +60,8 @@ export function CardFlipContainer({
   onSelectLink,
   onEdit,
   onExpandLink,
+  onOpenRolodex,
+  onScan,
   initialFace = 'front',
   inputAccessoryViewID,
 }: CardFlipContainerProps) {
@@ -180,17 +186,29 @@ export function CardFlipContainer({
             style={[StyleSheet.absoluteFill, backStyle, { zIndex: 0, pointerEvents: face === 'back' ? 'auto' : 'none' }]}>
             <CardBack
               editable={editable}
+              showIcons={showPencil && face === 'back'}
               onAddLink={onAddLink}
               onSelectLink={onSelectLink}
               onTap={handleTap}
               onExpandLink={onExpandLink}
+              onOpenRolodex={editable ? undefined : onOpenRolodex}
+              onScan={editable ? undefined : onScan}
+              onEdit={
+                editable
+                  ? undefined
+                  : () => {
+                      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.DEFAULT);
+                      if (onEdit) onEdit('back');
+                      else router.push('/editor?face=back');
+                    }
+              }
             />
           </Animated.View>
 
         </Animated.View>
     </GestureDetector>
 
-      {showPencil && (
+      {showPencil && face === 'front' && (
         <Animated.View
           entering={FadeIn.duration(Motion.durations.base)}
           style={[styles.pencil, { pointerEvents: 'box-none' }]}>
@@ -209,12 +227,7 @@ export function CardFlipContainer({
             }}
             hitSlop={Spacing.md}
             style={styles.pencilHit}>
-            <SymbolView
-              name="pencil"
-              size={20}
-              weight="medium"
-              tintColor={textColor ?? theme.text}
-            />
+            <SymbolView name="pencil" size={20} weight="medium" tintColor={textColor ?? theme.text} />
           </Pressable>
         </Animated.View>
       )}
@@ -239,8 +252,8 @@ const styles = StyleSheet.create({
     bottom: Spacing.md - Spacing.sm,
     right: Spacing.md - Spacing.sm,
   },
-  // Glyph stays 20pt; the padding + hitSlop widen the touch target to a
-  // comfortable ~44pt without moving the icon.
+  // The padding + hitSlop widen the touch target to a comfortable ~44pt+
+  // without moving the icon.
   pencilHit: {
     padding: Spacing.sm,
   },

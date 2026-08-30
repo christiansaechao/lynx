@@ -103,3 +103,46 @@ export interface Card {
   /** Per-field style overrides, keyed by EditableFieldKey. Absent = template defaults, no overrides. */
   fieldStyles: Partial<Record<EditableFieldKey, FieldStyle>>;
 }
+
+/** An event folder a collected card can be filed into (docs/PRODUCT_REQUIREMENTS.md's Active Folders). */
+export interface RolodexFolder {
+  id: string;
+  name: string;
+  /** Newly collected cards auto-route into whichever folder has this set. At most one folder is active at a time. */
+  isActive: boolean;
+}
+
+/**
+ * A point-in-time copy of someone else's card, saved into the collecting
+ * user's Rolodex. Deliberately not a live reference to the original card:
+ * the PRD calls for cards "saved here in its original, high-fidelity
+ * format" — if the other person edits their card later, this entry stays
+ * as it was at the moment of collection.
+ */
+export interface ContactCard {
+  id: string;
+  /**
+   * The originating cards.id this copy was captured from. Nullable for the
+   * seeded mock data (which has no backing row); a real capture always sets
+   * it -- it's what the future Post-Meetup Sorting screen matches on to
+   * detect and merge repeat encounters of the same person.
+   */
+  sourceCardId: string | null;
+  fields: CardFields;
+  links: Link[];
+  materialId: CardMaterialId;
+  templateId: CardTemplateId;
+  fontId?: CardFontId;
+  fontColorId?: CardFontColorId;
+  fontColorHex?: string;
+  /** ISO 8601. When this card was collected. */
+  collectedAt: string;
+  /** Which RolodexFolder this was auto-routed into, if any was active at collection time. */
+  folderId: string | null;
+  /** Free-text note the collecting user attached, per the Personal CRM feature. */
+  note: string | null;
+  /** Swiped right in post-meetup sorting, or starred manually — a prioritized/VIP flag. */
+  starred: boolean;
+  /** How this card was collected. */
+  source: 'qr' | 'nfc';
+}

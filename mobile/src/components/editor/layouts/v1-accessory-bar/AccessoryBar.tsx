@@ -1,7 +1,7 @@
 import { Keyboard, InputAccessoryView, Platform, Pressable, StyleSheet, Switch, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { EDITOR_ACCESSORY_VIEW_ID } from '@/constants/editorLayout';
+import { EDITOR_ACCESSORY_VIEW_ID } from '@/constants/editorAccessoryView';
 import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { useCardStore } from '@/store/useCardStore';

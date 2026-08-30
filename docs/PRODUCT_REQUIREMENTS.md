@@ -18,7 +18,7 @@ Lynx is a mobile application that acts as an electronic business card. In high-p
 4. **App-to-App NFC Exchange (Tap to Share)**
    - If both the sender and the receiver have the Lynx application installed, they can simply tap their phones together using NFC (similar to Apple's NameDrop) to instantly exchange their full digital business cards.
 
-5. **The "Rolodex" (Collected Contacts) & Active Folders**
+5. **The "Rolodex" (Collected Contacts) & Active Folders** — see [Rolodex Experience](./ROLODEX_EXPERIENCE.md#implementation-status) for build status
    - The app features a dedicated Contacts/Rolodex screen to manage saved cards.
    - When a user collects another person's card (via QR scan or NFC tap), it is saved here in its original, high-fidelity format.
    - **Active Folders:** Users (like recruiters) can create specific event folders (e.g., "Tech Fair 2026") and mark them as *Active*. Any business cards collected during that time are automatically routed into that folder, removing the need to manually sort them later.

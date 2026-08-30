@@ -2,12 +2,15 @@ import { useEffect } from 'react';
 
 import { useAuthStore } from '@/store/useAuthStore';
 import { useCardStore } from '@/store/useCardStore';
+import { useRolodexStore } from '@/store/useRolodexStore';
 import { loadCardCache, saveCardCache } from '@/utils/cardCache';
 import { syncCard } from '@/utils/cardSync';
 import { syncReplaceAllLinks } from '@/utils/linksSync';
 import { cardStamp } from '@/utils/cardSnapshot';
 import { mapCardRow } from '@/utils/mapCardRow';
+import { loadRolodexCache, saveRolodexCache } from '@/utils/rolodexCache';
 import { supabase } from '@/utils/supabase';
+import type { ContactCard, RolodexFolder } from '@/types/card';
 
 /**
  * Owns the Supabase session lifecycle for the app.
@@ -152,6 +155,75 @@ export function AuthProvider() {
       active = false;
     };
   }, [userId, setCardStatus, setCard, setIdentity, setSnapshot]);
+
+  const hydrateRolodex = useRolodexStore((s) => s.hydrate);
+
+  // Same cache-first, DB-wins-when-reachable shape as the card load above,
+  // kept in a separate effect since it's keyed on a different store and
+  // shouldn't block/be blocked by the card fetch.
+  useEffect(() => {
+    if (!userId) return;
+
+    let active = true;
+
+    (async () => {
+      const cached = await loadRolodexCache(userId);
+      if (active && cached) hydrateRolodex(userId, cached);
+
+      const { data, error } = await supabase
+        .from('contacts')
+        .select('*, cards(*, links(*))')
+        .eq('owner_user_id', userId)
+        .order('collected_at', { ascending: false });
+      if (!active || error || !data) return;
+
+      // A contact whose source card has since been deleted (owner deleted
+      // their account) has nothing left to render -- drop it rather than
+      // showing a blank tile.
+      const contacts: ContactCard[] = data.flatMap((row) => {
+        if (!row.cards) return [];
+        const { links, ...cardRow } = row.cards;
+        const card = mapCardRow(cardRow, links);
+        return [
+          {
+            id: row.id,
+            sourceCardId: row.source_card_id,
+            fields: card.fields,
+            links: card.links,
+            materialId: card.materialId,
+            templateId: card.templateId,
+            fontId: card.fontId,
+            fontColorId: card.fontColorId,
+            fontColorHex: card.fontColorHex,
+            collectedAt: row.collected_at,
+            folderId: row.folder_id,
+            note: row.note,
+            starred: row.starred,
+            source: row.source as 'qr' | 'nfc',
+          },
+        ];
+      });
+
+      const { data: folderRows, error: folderError } = await supabase
+        .from('folders')
+        .select('*')
+        .eq('owner_user_id', userId);
+      if (!active || folderError || !folderRows) return;
+
+      const folders: RolodexFolder[] = folderRows.map((f) => ({
+        id: f.id,
+        name: f.name,
+        isActive: f.is_active,
+      }));
+
+      hydrateRolodex(userId, { contacts, folders });
+      await saveRolodexCache(userId, { contacts, folders });
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [userId, hydrateRolodex]);
 
   return null;
 }

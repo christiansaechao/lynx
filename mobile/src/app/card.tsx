@@ -1,5 +1,5 @@
 import * as ScreenOrientation from 'expo-screen-orientation';
-import { useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
@@ -34,6 +34,7 @@ const WELCOME_TEXT_FADE_OUT = 2000;
 const WELCOME_OVERLAY_FADE_OUT = 2000;
 
 export default function CardHomeScreen() {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   // Owned here rather than by CardFlipContainer: the expansion covers the
   // whole screen, and the container is nested inside this screen's
@@ -57,23 +58,22 @@ export default function CardHomeScreen() {
   const textOpacity = useSharedValue(0);
   const overlayOpacity = useSharedValue(1);
 
-  // Onboarding locks to portrait on its own mount, so if this screen
-  // started its own landscape lock without waiting, the two in-flight
-  // native calls could race — occasionally the portrait lock would win and
-  // settle after this screen had already mounted, leaving the app stuck in
-  // portrait chrome around landscape content. Waiting on the hook's ready
-  // flag makes this screen's lock the definitive one.
-  const orientationReady = useOrientationLock(ScreenOrientation.OrientationLock.LANDSCAPE);
+  // card.tsx never unmounts while rolodex/scan sit on top of it -- it's
+  // only navigated away from. That left its useOrientationLock's AppState
+  // listener armed the whole time those screens owned orientation, so any
+  // AppState "active" blip during their teardown (camera session close,
+  // etc.) made this screen's listener relock LANDSCAPE on top of whatever
+  // the focused screen was still settling into -- a third, out-of-order
+  // lock call. Suppress this hook whenever card.tsx isn't the focused
+  // screen so only one screen's lock is ever armed at a time; the focus
+  // effect below is what re-applies LANDSCAPE the instant focus returns.
+  const [focused, setFocused] = useState(true);
+  const orientationReady = useOrientationLock(ScreenOrientation.OrientationLock.LANDSCAPE, focused);
 
-  // The editor frees rotation while it's open (editing doesn't care which
-  // way up the phone is held), so this screen's own lock needs re-applying
-  // the moment it regains focus -- not just on AppState "active" like the
-  // hook already handles. Re-locking from here, on focus, rather than
-  // having the editor restore LANDSCAPE from its own unmount, avoids the
-  // editor ever issuing its own lockAsync mid-dismiss.
   useFocusEffect(
     useCallback(() => {
-      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+      setFocused(true);
+      return () => setFocused(false);
     }, [])
   );
 
@@ -111,7 +111,27 @@ export default function CardHomeScreen() {
         },
       ]}>
       <View style={styles.stage}>
-        <CardFlipContainer mode="view" onExpandLink={setExpandedLink} />
+        <CardFlipContainer
+          mode="view"
+          onExpandLink={setExpandedLink}
+          onOpenRolodex={() => {
+            // Settle the target lock here, before navigating, instead of
+            // leaving it to rolodex.tsx's own useOrientationLock(PORTRAIT_UP)
+            // mount effect to race against this screen's still-live
+            // LANDSCAPE lock -- that race was producing a spurious
+            // portrait -> landscape -> portrait triple-rotation on entry
+            // (the same class of race fixed for the editor in editor.tsx
+            // and CardFlipContainer's pencil handler).
+            ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+            router.push('/rolodex');
+          }}
+          onScan={() => {
+            // Same pre-lock as onOpenRolodex above -- scan.tsx also locks
+            // PORTRAIT_UP on mount.
+            ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+            router.push('/scan');
+          }}
+        />
       </View>
 
       <LinkQRExpanded link={expandedLink} onClose={() => setExpandedLink(null)} />
