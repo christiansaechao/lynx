@@ -106,18 +106,22 @@ export default function EditorScreen() {
             inputAccessoryViewID={EDITOR_ACCESSORY_VIEW_ID}
           />
         </View>
-
-        <ActiveEditorLayout
-          selectedField={selectedField}
-          onCloseFieldSettings={() => setSelectedField(null)}
-          globalSettingsOpen={globalSettingsOpen}
-          onCloseGlobalSettings={() => setGlobalSettingsOpen(false)}
-          addLinkOpen={addLinkOpen}
-          onCloseAddLink={() => setAddLinkOpen(false)}
-          editLinkId={editLinkId}
-          onCloseEditLink={() => setEditLinkId(null)}
-        />
       </Animated.View>
+
+      {/* Outside the keyboard-translateY Animated.View and its safe-area
+          padding: the sheets are full-screen overlays and position
+          themselves from the real screen edge. Keeping them in here would
+          double-count the keyboard shift and inset them by the padding. */}
+      <ActiveEditorLayout
+        selectedField={selectedField}
+        onCloseFieldSettings={() => setSelectedField(null)}
+        globalSettingsOpen={globalSettingsOpen}
+        onCloseGlobalSettings={() => setGlobalSettingsOpen(false)}
+        addLinkOpen={addLinkOpen}
+        onCloseAddLink={() => setAddLinkOpen(false)}
+        editLinkId={editLinkId}
+        onCloseEditLink={() => setEditLinkId(null)}
+      />
 
       {mountSnapshot && <CardSnapshotComposite ref={snapshotRef} />}
     </View>

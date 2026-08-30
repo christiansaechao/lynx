@@ -1,5 +1,5 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
-import { Modal, Pressable, ScrollView, StyleSheet } from 'react-native';
+import { Pressable, ScrollView, StyleSheet } from 'react-native';
 import Animated, {
   FadeIn,
   FadeOut,
@@ -76,12 +76,14 @@ export function EditorSheet({ title, visible, onClose, children, fillHeight = fa
   if (!mounted) return null;
 
   return (
-    // A Modal renders in its own native window at true screen coordinates,
-    // so the sheet's `bottom: 0` and the keyboard offset both measure from
-    // the real screen edge -- not from inside the editor's safe-area padding
-    // + translateY, which was floating the sheet up and leaving dead space
-    // between it and the keyboard. `transparent` keeps the scrim ours.
-    <Modal visible transparent animationType="none" onRequestClose={onClose} statusBarTranslucent>
+    // A plain full-screen overlay -- NOT an RN <Modal>. Modal spins up its
+    // own iOS view controller whose supportedInterfaceOrientations forced
+    // the whole window to portrait the instant a sheet opened. This View is
+    // just absolutely positioned over the editor screen, so it inherits the
+    // current orientation and has no native window of its own. It's rendered
+    // where the sheet component is mounted (inside the editor screen), which
+    // already fills the screen, so screen-edge coordinates line up.
+    <Animated.View style={StyleSheet.absoluteFill}>
       <Animated.View
         entering={FadeIn.duration(Motion.durations.fast)}
         exiting={FadeOut.duration(Motion.durations.base)}
@@ -95,18 +97,15 @@ export function EditorSheet({ title, visible, onClose, children, fillHeight = fa
         })}
         style={[
           styles.sheetWrap,
-          // Landscape-locked: the notch / Dynamic Island and the home
-          // indicator are on the device's left and right physical edges, not
-          // the top or bottom. Inset the whole sheet clear of both so its
-          // rounded corners, header and content never slide under either.
+          // Inset clear of the notch / Dynamic Island and home indicator,
+          // which sit on the device's left/right edges in landscape.
           { paddingLeft: insets.left, paddingRight: insets.right, paddingTop: insets.top + Spacing.md },
           keyboardStyle,
         ]}>
         <Animated.View
-          // The wrapper is pinned top-to-bottom so this sheet fills at most
-          // the space above the home indicator and never pushes its header
-          // off the top of the screen -- content beyond the maxHeight cap
-          // scrolls inside the ScrollView instead of overflowing.
+          // Pinned top-to-bottom so the sheet fills at most the space above
+          // the home indicator and never pushes its header off the top --
+          // content beyond the maxHeight cap scrolls inside the ScrollView.
           style={[
             styles.sheet,
             { backgroundColor: theme.backgroundElement },
@@ -126,7 +125,7 @@ export function EditorSheet({ title, visible, onClose, children, fillHeight = fa
           </ScrollView>
         </Animated.View>
       </Animated.View>
-    </Modal>
+    </Animated.View>
   );
 }
 
