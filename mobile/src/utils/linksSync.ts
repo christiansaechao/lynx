@@ -19,7 +19,11 @@ export interface SyncResult {
 const ok: SyncResult = { ok: true };
 const failed: SyncResult = { ok: false };
 
-/** Insert one link. `id` is the client localId so the row matches the store. */
+/**
+ * Insert one link. `id` is the client localId (a real v4 UUID -- see
+ * localId.ts) written straight into the `uuid` primary key so the DB row
+ * and the optimistic store row share an id and no reconciliation is needed.
+ */
 export async function syncAddLink(
   cardId: string,
   link: Link,
@@ -34,8 +38,13 @@ export async function syncAddLink(
       is_active: link.isActive,
       sort_order: sortOrder,
     });
-    return error ? failed : ok;
-  } catch {
+    if (error) {
+      console.warn('[linksSync] syncAddLink failed', { cardId, link, error });
+      return failed;
+    }
+    return ok;
+  } catch (e) {
+    console.warn('[linksSync] syncAddLink threw', e);
     return failed;
   }
 }

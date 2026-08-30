@@ -198,6 +198,7 @@ export const useCardStore = create<CardStore>((set, get) => {
       if (cardId) {
         void syncAddLink(cardId, created, get().card.links.length - 1).then((r) => persist(r.ok));
       } else {
+        console.warn('[useCardStore] addLink with no cardId -- link is local-only', created);
         persist(false);
       }
     },
