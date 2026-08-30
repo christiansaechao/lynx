@@ -17,13 +17,6 @@ interface CardBackProps {
   onSelectLink?: (id: string) => void;
   onTap?: () => void;
   /**
-   * Rendered inside CardSnapshotComposite -- the face being captured as the
-   * PNG that the Master QR itself points at. Suppresses the Master QR here
-   * so the image doesn't bake in a (now stale) copy of the very code that
-   * loaded it; everything else about the face is unchanged.
-   */
-  forSnapshot?: boolean;
-  /**
    * Viewing a link's QR. Owned by the parent because the modal must mount
    * outside this face's 3D/backface-hidden transform — see CardFlipContainer.
    */
@@ -59,7 +52,6 @@ export function CardBack({
   onScan,
   onEdit,
   showIcons = false,
-  forSnapshot = false,
 }: CardBackProps) {
   const card = useCardStore((state) => state.card);
   // The Master QR encodes the URL of the rendered front+back snapshot (see
@@ -67,7 +59,7 @@ export function CardBack({
   // while null we suppress the code rather than point it at a dead
   // placeholder domain.
   const snapshotUrl = useCardStore((state) => state.snapshotUrl);
-  const showMasterQR = !forSnapshot && !!snapshotUrl;
+  const showMasterQR = !!snapshotUrl;
   const template = useCardTemplateStyle(card.templateId, card.materialId);
   const textColor = template.textColor;
 
@@ -139,7 +131,7 @@ export function CardBack({
   return (
     <Pressable style={styles.pressable} onPress={onTap}>
         {/* No tilt: the back is a flat, static sharing hub, not a glare/tilt surface. */}
-        <CardMaterial templateId={card.templateId} materialId={card.materialId} tilt={null} opaque={forSnapshot}>
+        <CardMaterial templateId={card.templateId} materialId={card.materialId} tilt={null}>
           <View style={styles.content} onLayout={onLayout}>
             <View style={[styles.rotated, rotated]}>
               {/* The Master QR — a snapshot of the whole card, not one link.
@@ -163,8 +155,7 @@ export function CardBack({
                   </ThemedText>
                 </>
               ) : (
-                editable &&
-                !forSnapshot && (
+                editable && (
                   <ThemedText
                     variant="caption"
                     style={[styles.masterPending, { color: template.labelColor }]}>

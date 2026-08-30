@@ -2,8 +2,8 @@ import { forwardRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 
-import { CardBack } from '@/components/CardBack';
 import { CardFront } from '@/components/CardFront';
+import { CardSnapshotBack } from '@/components/CardSnapshotBack';
 import { Card } from '@/constants/theme';
 
 /**
@@ -12,6 +12,12 @@ import { Card } from '@/constants/theme';
  * (docs/PRODUCT_REQUIREMENTS.md, MOCKUP_BRIEF §7.5). This component is that
  * PNG's source: it renders both faces at a fixed size for
  * react-native-view-shot's captureRef.
+ *
+ * The front is the real CardFront (branded, quick-glance info). The back is
+ * NOT the in-app CardBack -- it's CardSnapshotBack, a 2x2 grid of
+ * individually scannable per-link QR codes, so a recruiter who saves the
+ * image can scan any link straight from their camera roll (the in-app
+ * CardBack's own Master QR would just bake a stale copy of itself in).
  *
  * Mounted offscreen (see styles.host). It is mounted only transiently, for
  * the capture window itself -- useCardSnapshot flips it in after the edit
@@ -38,7 +44,7 @@ export const CardSnapshotComposite = forwardRef<View>((_props, ref) => {
           <CardFront editable={false} tilt={tilt} forSnapshot />
         </View>
         <View style={[styles.face, { width: CAPTURE_WIDTH, height: FACE_HEIGHT }]}>
-          <CardBack editable={false} forSnapshot />
+          <CardSnapshotBack />
         </View>
       </View>
     </View>
