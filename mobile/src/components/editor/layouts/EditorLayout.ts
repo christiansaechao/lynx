@@ -17,4 +17,8 @@ export interface EditorLayoutProps {
 
   addLinkOpen: boolean;
   onCloseAddLink: () => void;
+
+  /** When set, the add-link sheet opens in edit mode for this link. */
+  editLinkId: string | null;
+  onCloseEditLink: () => void;
 }

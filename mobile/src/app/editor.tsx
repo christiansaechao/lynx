@@ -11,7 +11,8 @@ import { useKeyboardOffset } from '@/hooks/use-keyboard-offset';
 import { CardFlipContainer } from '@/components/CardFlipContainer';
 import { CardSnapshotComposite } from '@/components/CardSnapshotComposite';
 import { ThemedText } from '@/components/themed-text';
-import { EDITOR_ACCESSORY_VIEW_ID, getActiveEditorLayout } from '@/constants/editorLayout';
+import { getActiveEditorLayout } from '@/constants/editorLayout';
+import { EDITOR_ACCESSORY_VIEW_ID } from '@/constants/editorAccessoryView';
 import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import type { EditableFieldKey } from '@/types/card';
@@ -40,6 +41,7 @@ export default function EditorScreen() {
   const [selectedField, setSelectedField] = useState<EditableFieldKey | null>(null);
   const [globalSettingsOpen, setGlobalSettingsOpen] = useState(false);
   const [addLinkOpen, setAddLinkOpen] = useState(false);
+  const [editLinkId, setEditLinkId] = useState<string | null>(null);
 
   // Editing doesn't care which way up the phone is held, so leave rotation
   // free here instead of pinning landscape like the card view does. The
@@ -100,6 +102,7 @@ export default function EditorScreen() {
             initialFace={initialFace}
             onSelectField={setSelectedField}
             onAddLink={() => setAddLinkOpen(true)}
+            onSelectLink={setEditLinkId}
             inputAccessoryViewID={EDITOR_ACCESSORY_VIEW_ID}
           />
         </View>
@@ -111,6 +114,8 @@ export default function EditorScreen() {
           onCloseGlobalSettings={() => setGlobalSettingsOpen(false)}
           addLinkOpen={addLinkOpen}
           onCloseAddLink={() => setAddLinkOpen(false)}
+          editLinkId={editLinkId}
+          onCloseEditLink={() => setEditLinkId(null)}
         />
       </Animated.View>
 

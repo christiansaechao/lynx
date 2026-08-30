@@ -24,6 +24,8 @@ export function EditorLayoutV1({
   onCloseGlobalSettings,
   addLinkOpen,
   onCloseAddLink,
+  editLinkId,
+  onCloseEditLink,
 }: EditorLayoutProps) {
   const [kerningField, setKerningField] = useKerningField(selectedField, onCloseFieldSettings);
 
@@ -58,6 +60,7 @@ export function EditorLayoutV1({
 
       <GlobalSettingsSheet visible={globalSettingsOpen} onClose={onCloseGlobalSettings} />
       <AddLinkSheet visible={addLinkOpen} onClose={onCloseAddLink} />
+      <AddLinkSheet visible={!!editLinkId} editLinkId={editLinkId} onClose={onCloseEditLink} />
     </>
   );
 }
