@@ -69,6 +69,7 @@ export async function captureCardById(
       fontColorId: card.fontColorId,
       fontColorHex: card.fontColorHex,
       collectedAt: new Date().toISOString(),
+      sortedAt: null,
       folderId: activeFolderId,
       note: null,
       starred: false,

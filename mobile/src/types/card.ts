@@ -137,6 +137,12 @@ export interface ContactCard {
   fontColorHex?: string;
   /** ISO 8601. When this card was collected. */
   collectedAt: string;
+  /**
+   * ISO 8601, or null while the card is still in the unsorted post-meetup
+   * swipe stack (docs/ROLODEX_EXPERIENCE.md §2). Set the moment the user
+   * swipes it left/right/up in the sort screen. Mirrors `contacts.sorted_at`.
+   */
+  sortedAt: string | null;
   /** Which RolodexFolder this was auto-routed into, if any was active at collection time. */
   folderId: string | null;
   /** Free-text note the collecting user attached, per the Personal CRM feature. */

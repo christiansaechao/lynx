@@ -196,6 +196,7 @@ export function AuthProvider() {
             fontColorId: card.fontColorId,
             fontColorHex: card.fontColorHex,
             collectedAt: row.collected_at,
+            sortedAt: row.sorted_at,
             folderId: row.folder_id,
             note: row.note,
             starred: row.starred,

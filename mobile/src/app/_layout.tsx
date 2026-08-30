@@ -38,6 +38,7 @@ export default function RootLayout() {
               <Stack.Screen name="editor" options={{ presentation: 'modal' }} />
               <Stack.Screen name="rolodex" options={{ presentation: 'modal' }} />
               <Stack.Screen name="scan" options={{ presentation: 'modal' }} />
+              <Stack.Screen name="sort" options={{ presentation: 'modal' }} />
             </Stack.Protected>
           </Stack>
         </ThemeProvider>

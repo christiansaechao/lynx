@@ -23,8 +23,36 @@ export async function syncAddContact(ownerUserId: string, contact: ContactCard):
       starred: contact.starred,
       note: contact.note,
       collected_at: contact.collectedAt,
+      sorted_at: contact.sortedAt,
       source: contact.source,
     });
+    return error ? { ok: false } : { ok: true };
+  } catch {
+    return { ok: false };
+  }
+}
+
+/**
+ * Patches the mutable fields of an already-collected contact -- the manual
+ * star toggle and the note editor in the Rolodex. `folder_id` is included
+ * so a future "move to folder" action reuses this path; today the store
+ * only ever changes `starred` / `note` post-capture.
+ */
+export async function syncUpdateContact(
+  ownerUserId: string,
+  contact: Pick<ContactCard, 'id' | 'starred' | 'note' | 'folderId' | 'sortedAt'>,
+): Promise<SyncResult> {
+  try {
+    const { error } = await supabase
+      .from('contacts')
+      .update({
+        starred: contact.starred,
+        note: contact.note,
+        folder_id: contact.folderId,
+        sorted_at: contact.sortedAt,
+      })
+      .eq('id', contact.id)
+      .eq('owner_user_id', ownerUserId);
     return error ? { ok: false } : { ok: true };
   } catch {
     return { ok: false };
