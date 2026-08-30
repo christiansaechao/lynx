@@ -1,11 +1,19 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet } from 'react-native';
-import Animated, { FadeIn, FadeOut, runOnJS, SlideInDown, SlideOutDown } from 'react-native-reanimated';
+import { Modal, Pressable, ScrollView, StyleSheet } from 'react-native';
+import Animated, {
+  FadeIn,
+  FadeOut,
+  runOnJS,
+  SlideInDown,
+  SlideOutDown,
+  useAnimatedKeyboard,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { Motion, Spacing } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 
 // Slack over the exit duration before force-unmounting, so the timer never
 // beats an animation that is about to finish on its own.
@@ -29,6 +37,24 @@ export function EditorSheet({ title, visible, onClose, children, fillHeight = fa
   // something to play against.
   const [mounted, setMounted] = useState(visible);
   const insets = useSafeAreaInsets();
+  const theme = useTheme();
+  const keyboard = useAnimatedKeyboard();
+
+  // Lift the whole sheet by the keyboard's height so the caret and the row
+  // being typed into never sit behind it. `height` is 0 when the keyboard
+  // is closed, so this is a no-op the rest of the time.
+  const keyboardStyle = useAnimatedStyle(() => ({
+    paddingBottom: keyboard.height.value,
+  }));
+
+  // While the keyboard is up the sheet's own bottom inset (home indicator /
+  // Spacing.lg) is just a gap between the last field and the keyboard. Drop
+  // it as the keyboard rises so the sheet's bottom edge hugs the keyboard.
+  const sheetPadStyle = useAnimatedStyle(() => {
+    const rest = Math.max(insets.bottom, Spacing.lg);
+    const open = keyboard.height.value > 0;
+    return { paddingBottom: open ? Spacing.sm : rest };
+  });
 
   useEffect(() => {
     if (visible) {
@@ -50,7 +76,12 @@ export function EditorSheet({ title, visible, onClose, children, fillHeight = fa
   if (!mounted) return null;
 
   return (
-    <>
+    // A Modal renders in its own native window at true screen coordinates,
+    // so the sheet's `bottom: 0` and the keyboard offset both measure from
+    // the real screen edge -- not from inside the editor's safe-area padding
+    // + translateY, which was floating the sheet up and leaving dead space
+    // between it and the keyboard. `transparent` keeps the scrim ours.
+    <Modal visible transparent animationType="none" onRequestClose={onClose} statusBarTranslucent>
       <Animated.View
         entering={FadeIn.duration(Motion.durations.fast)}
         exiting={FadeOut.duration(Motion.durations.base)}
@@ -69,17 +100,18 @@ export function EditorSheet({ title, visible, onClose, children, fillHeight = fa
           // the top or bottom. Inset the whole sheet clear of both so its
           // rounded corners, header and content never slide under either.
           { paddingLeft: insets.left, paddingRight: insets.right, paddingTop: insets.top + Spacing.md },
+          keyboardStyle,
         ]}>
-        <ThemedView
-          type="backgroundElement"
+        <Animated.View
           // The wrapper is pinned top-to-bottom so this sheet fills at most
           // the space above the home indicator and never pushes its header
           // off the top of the screen -- content beyond the maxHeight cap
           // scrolls inside the ScrollView instead of overflowing.
           style={[
             styles.sheet,
+            { backgroundColor: theme.backgroundElement },
             fillHeight && styles.sheetFill,
-            { paddingBottom: Math.max(insets.bottom, Spacing.lg) },
+            sheetPadStyle,
           ]}>
           <Pressable style={styles.header} onPress={onClose} hitSlop={Spacing.sm}>
             <ThemedText variant="label">{title}</ThemedText>
@@ -92,9 +124,9 @@ export function EditorSheet({ title, visible, onClose, children, fillHeight = fa
             contentContainerStyle={fillHeight ? styles.scrollContentFill : undefined}>
             {children}
           </ScrollView>
-        </ThemedView>
+        </Animated.View>
       </Animated.View>
-    </>
+    </Modal>
   );
 }
 
